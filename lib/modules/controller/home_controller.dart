@@ -15,13 +15,18 @@ class HomeController extends GetxController {
 
   var lodaing = true.obs;
   HomeModel homeModel = HomeModel();
+  var selectedIndex = 0.obs;
 
   Future<void> loadingData() async {
     lodaing.value = true;
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     homeModel = HomeModel.fromJson(Datas.data);
     print(homeModel.data?.popular?[0].name);
     lodaing.value = false;
+  }
+
+  void setIndex(int index) {
+    selectedIndex.value = index;
   }
 
   @override
