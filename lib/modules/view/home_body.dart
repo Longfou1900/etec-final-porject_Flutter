@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_projects_getx/modules/controller/home_controller.dart';
+import 'package:flutter_projects_getx/modules/view/widgets/explore_tab.dart';
+import 'package:flutter_projects_getx/modules/view/widgets/home_app_bar.dart';
+import 'package:flutter_projects_getx/modules/view/widgets/home_tab.dart';
+import 'package:flutter_projects_getx/modules/view/widgets/profile_tab.dart';
+import 'package:get/get.dart';
+
+class HomeBody extends GetView<HomeController> {
+  const HomeBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return NestedScrollView(
+      floatHeaderSlivers: true,
+      physics:  BouncingScrollPhysics(),
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver:  HomeAppBar(),
+          ),
+        ];
+      },
+      body: Obx(
+        () => controller.lodaing.value
+            ?  Center(child: CircularProgressIndicator())
+            : SafeArea(
+                top: false,
+                child: IndexedStack(
+                  index: controller.selectedIndex.value,
+                  children: [
+                    HomeTab(controller.homeModel.data),
+                     ExploreTab(),
+                     ProfileTab(),
+                  ],
+                ),
+              ),
+      ),
+    );
+  }
+}
