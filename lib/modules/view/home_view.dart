@@ -72,7 +72,7 @@ class HomeView extends GetView<HomeController> {
     flexibleSpace: FlexibleSpaceBar(
       titlePadding: EdgeInsets.only(left: 18, right: 18, bottom: 65),
       expandedTitleScale: 1,
-      title: SizedBox( 
+      title: SizedBox(
         height: 50,
         child: SearchBar(
           leading: Icon(Icons.search, color: Colors.grey),
@@ -96,19 +96,11 @@ class HomeView extends GetView<HomeController> {
       child: TabBar(
         indicatorWeight: 4,
         indicatorColor: Colors.white,
-        tabs: List.generate(
-          3,
-          (index) => Tab(
-            child: Text(
-              'Home',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
+        tabs: [
+          Tab(icon: Icon(Icons.home, color: Colors.white, size: 24)),
+          Tab(icon: Icon(Icons.explore, color: Colors.white, size: 24)),
+          Tab(icon: Icon(Icons.person, color: Colors.white, size: 24)),
+        ],
       ),
     ),
   );
