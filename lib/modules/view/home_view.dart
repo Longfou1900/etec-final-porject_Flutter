@@ -13,7 +13,7 @@ class HomeView extends GetView<HomeController> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor:  Color(0xFF0D1B2A),
-        body:  HomeBody(),
+        body:  SafeArea(child: HomeBody()),
         bottomNavigationBar:  HomeBottomNav(),
       ),
     );

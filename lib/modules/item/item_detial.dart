@@ -22,7 +22,7 @@ class ItemDetail extends StatelessWidget {
     final item = id == 0
         ? (popularItems != null ? popularItems[index] : null)
         : (latestItems != null ? latestItems[index] : null);
-    final price = id == 0 ? 249 + index * 40 : 199 + index * 35;
+    final price = item?.displayPrice ?? r'$0';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FB),
@@ -101,7 +101,7 @@ class ItemDetail extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '\$$price',
+                            price,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w800,
