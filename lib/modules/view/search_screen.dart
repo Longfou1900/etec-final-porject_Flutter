@@ -74,7 +74,7 @@ class SearchScreen extends StatelessWidget {
 class _SearchTag extends StatelessWidget {
   final String label;
 
-  const _SearchTag(this.label);
+   _SearchTag(this.label);
 
   @override
   Widget build(BuildContext context) {

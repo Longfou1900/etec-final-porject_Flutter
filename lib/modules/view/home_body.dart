@@ -18,24 +18,23 @@ class HomeBody extends GetView<HomeController> {
         return [
           SliverOverlapAbsorber(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            sliver: Obx(
-              () => controller.selectedIndex.value == 0
-                  ? const HomeAppBar()
-                  : const SliverToBoxAdapter(child: SizedBox.shrink()),
-            ),
+            sliver:  HomeAppBar(),
           ),
         ];
       },
       body: Obx(
         () => controller.lodaing.value
             ?  Center(child: CircularProgressIndicator())
-            : IndexedStack(
-                index: controller.selectedIndex.value,
-                children: [
-                  HomeTab(controller.homeModel.data),
-                   ExploreTab(),
-                   ProfileTab(),
-                ],
+            : SafeArea(
+                top: false,
+                child: IndexedStack(
+                  index: controller.selectedIndex.value,
+                  children: [
+                    HomeTab(controller.homeModel.data),
+                     ExploreTab(),
+                     ProfileTab(),
+                  ],
+                ),
               ),
       ),
     );

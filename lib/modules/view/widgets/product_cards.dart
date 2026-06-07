@@ -18,7 +18,7 @@ class PopularProductList extends StatelessWidget {
         separatorBuilder: (context, index) =>  SizedBox(width: 16),
         itemBuilder: (context, index) {
           final item = products?[index];
-          final price = item?.displayPrice ?? r'$0';
+          final price = '\$${199 + index * 50}';
 
           return GestureDetector(
             onTap: () {
@@ -147,14 +147,14 @@ class PopularProductList extends StatelessWidget {
 class LatestProductList extends StatelessWidget {
   final List<Late>? products;
 
-  const LatestProductList({super.key, required this.products});
+   LatestProductList({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: List.generate(products?.length ?? 0, (index) {
         final item = products?[index];
-        final price = item?.displayPrice ?? r'$0';
+        final price = '\$${179 + index * 40}';
 
         return GestureDetector(
           onTap: () {
