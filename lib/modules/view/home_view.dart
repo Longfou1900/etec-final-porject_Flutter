@@ -12,9 +12,9 @@ class HomeView extends GetView<HomeController> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor:  Color(0xFF0D1B2A),
-        body:  SafeArea(child: HomeBody()),
-        bottomNavigationBar:  HomeBottomNav(),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: SafeArea(child: HomeBody()),
+        bottomNavigationBar: HomeBottomNav(),
       ),
     );
   }

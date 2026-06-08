@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       initialBinding: HomeBinding(),
       theme: LightMode.theme,
       darkTheme: DarkMode.theme,
-      themeMode: ThemeMode.dark,
+      // themeMode will be controlled from HomeController via Get.changeThemeMode()
+      themeMode: ThemeMode.system,
     );
   }
 }
