@@ -1,57 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_projects_getx/modules/controller/home_controller.dart';
 import 'package:flutter_projects_getx/modules/model/home_model.dart';
 import 'package:flutter_projects_getx/modules/view/search_screen.dart';
 import 'package:get/get.dart';
 
-class HomeAppBar extends StatefulWidget {
+class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
-
-  @override
-  State<HomeAppBar> createState() => _HomeAppBarState();
-}
-
-class _HomeAppBarState extends State<HomeAppBar> {
-  final PageController _pageController = PageController();
-  Timer? _slideTimer;
-  int _currentSlide = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _slideTimer = Timer.periodic(const Duration(seconds: 4), (_) {
-      if (!_pageController.hasClients) return;
-
-      final controller = Get.find<HomeController>();
-      final slideCount = _slideItems(controller).length;
-      if (slideCount <= 1) return;
-
-      _currentSlide = (_currentSlide + 1) % slideCount;
-      _pageController.animateToPage(
-        _currentSlide,
-        duration: const Duration(milliseconds: 650),
-        curve: Curves.easeInOut,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _slideTimer?.cancel();
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  List<Late> _slideItems(HomeController controller) {
-    final popularItems = controller.homeModel.data?.popular ?? [];
-    final latestItems = controller.homeModel.data?.lates ?? [];
-
-    return [...popularItems, ...latestItems]
-        .where((item) => item.hasValidImage)
-        .toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,67 +142,118 @@ class _HomeAppBarState extends State<HomeAppBar> {
         background: Container(
           color: Theme.of(context).colorScheme.surface,
           padding: const EdgeInsets.fromLTRB(20, 98, 20, 18),
-          child: Obx(
-            () {
-              final slideItems = _slideItems(controller);
-
-              if (controller.lodaing.value || slideItems.isEmpty) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                );
-              }
-
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(28),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    PageView.builder(
-                      controller: _pageController,
-                      itemCount: slideItems.length,
-                      onPageChanged: (index) {
-                        if (!mounted) return;
-                        setState(() => _currentSlide = index);
-                      },
-                      itemBuilder: (context, index) {
-                        return _PromoSlide(item: slideItems[index]);
-                      },
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 14,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          slideItems.length,
-                          (index) => AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            width: index == _currentSlide ? 22 : 7,
-                            height: 7,
-                            margin: const EdgeInsets.symmetric(horizontal: 3),
-                            decoration: BoxDecoration(
-                              color: index == _currentSlide
-                                  ? const Color(0xFF8AF05B)
-                                  : Colors.white.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(99),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          child: _HomePromoCarousel(controller: controller),
         ),
       ),
     );
+  }
+}
+
+class _HomePromoCarousel extends StatefulWidget {
+  const _HomePromoCarousel({required this.controller});
+
+  final HomeController controller;
+
+  @override
+  State<_HomePromoCarousel> createState() => __HomePromoCarouselState();
+}
+
+class __HomePromoCarouselState extends State<_HomePromoCarousel> {
+  final PageController _pageController = PageController();
+  Timer? _slideTimer;
+  int _currentSlide = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _slideTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!_pageController.hasClients) return;
+
+      final slideCount = _slideItems(widget.controller).length;
+      if (slideCount <= 1) return;
+
+      _currentSlide = (_currentSlide + 1) % slideCount;
+      _pageController.animateToPage(
+        _currentSlide,
+        duration: const Duration(milliseconds: 650),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _slideTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  List<Late> _slideItems(HomeController controller) {
+    final popularItems = controller.homeModel.data?.popular ?? [];
+    final latestItems = controller.homeModel.data?.lates ?? [];
+
+    return [...popularItems, ...latestItems]
+        .where((item) => item.hasValidImage)
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final slideItems = _slideItems(widget.controller);
+
+      if (widget.controller.lodaing.value || slideItems.isEmpty) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(28),
+          ),
+        );
+      }
+
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            PageView.builder(
+              controller: _pageController,
+              itemCount: slideItems.length,
+              onPageChanged: (index) {
+                if (!mounted) return;
+                setState(() => _currentSlide = index);
+              },
+              itemBuilder: (context, index) {
+                return _PromoSlide(item: slideItems[index]);
+              },
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 14,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  slideItems.length,
+                  (index) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    width: index == _currentSlide ? 22 : 7,
+                    height: 7,
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    decoration: BoxDecoration(
+                      color: index == _currentSlide
+                          ? const Color(0xFF8AF05B)
+                          : Colors.white.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -257,7 +265,17 @@ class _PromoSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF202524),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.10),
+            blurRadius: 22,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
       child: Stack(
         children: [
           Positioned(

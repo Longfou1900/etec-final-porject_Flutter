@@ -44,10 +44,21 @@ class HomeController extends GetxController {
     selectedIndex.value = index;
   }
 
+  void setDarkMode() {
+    isDarkMode.value = true;
+    Get.changeThemeMode(ThemeMode.dark);
+  }
+
+  void setLightMode() {
+    isDarkMode.value = false;
+    Get.changeThemeMode(ThemeMode.light);
+  }
+
   void toggleTheme() {
     isDarkMode.toggle();
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
   }
+
 
   @override
   void onInit() async {
