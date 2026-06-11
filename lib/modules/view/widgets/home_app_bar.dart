@@ -6,6 +6,11 @@ import 'package:flutter_projects_getx/modules/model/home_model.dart';
 import 'package:flutter_projects_getx/modules/view/search_screen.dart';
 import 'package:get/get.dart';
 
+import '../cart_screen.dart';
+
+
+
+
 class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key});
 
@@ -169,7 +174,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
           child: Obx(() {
             final isDark = controller.isDarkMode.value;
             return IconButton(
-              onPressed: () {},
+              onPressed: () => Get.to(() => CartScreen()),
               icon: Icon(
                 Icons.shopping_bag_outlined,
                 color:
@@ -185,64 +190,64 @@ class _HomeAppBarState extends State<HomeAppBar> {
         background: Container(
           color: Theme.of(context).colorScheme.surface,
           padding: const EdgeInsets.fromLTRB(20, 98, 20, 18),
-          child: Obx(
-            () {
-              final slideItems = _slideItems(controller);
+          child: Obx(() {
+            final slideItems = _slideItems(controller);
 
-              if (controller.lodaing.value || slideItems.isEmpty) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(28),
+            if (controller.lodaing.value || slideItems.isEmpty) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+              );
+            }
+
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(28),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+
+                  PageView.builder(
+                    controller: _pageController,
+                    itemCount: slideItems.length,
+                    onPageChanged: (index) {
+                      if (!mounted) return;
+                      setState(() => _currentSlide = index);
+                    },
+                    itemBuilder: (context, index) {
+                      return _PromoSlide(item: slideItems[index]);
+                    },
                   ),
-                );
-              }
-
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(28),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    PageView.builder(
-                      controller: _pageController,
-                      itemCount: slideItems.length,
-                      onPageChanged: (index) {
-                        if (!mounted) return;
-                        setState(() => _currentSlide = index);
-                      },
-                      itemBuilder: (context, index) {
-                        return _PromoSlide(item: slideItems[index]);
-                      },
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 14,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          slideItems.length,
-                          (index) => AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            width: index == _currentSlide ? 22 : 7,
-                            height: 7,
-                            margin: const EdgeInsets.symmetric(horizontal: 3),
-                            decoration: BoxDecoration(
-                              color: index == _currentSlide
-                                  ? const Color(0xFF8AF05B)
-                                  : Colors.white.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(99),
-                            ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 14,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        slideItems.length,
+                        (index) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          width: index == _currentSlide ? 22 : 7,
+                          height: 7,
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                            color: index == _currentSlide
+                                ? const Color(0xFF8AF05B)
+                                : Colors.white.withValues(alpha: 0.5),
+                            borderRadius: BorderRadius.circular(99),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
@@ -299,21 +304,24 @@ class _PromoSlide extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 22, 152, 22),
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 190),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Super Sale',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28,
+                constraints: const BoxConstraints(maxWidth: 190, maxHeight: 110),
+                child: SizedBox(
+                  height: 110,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Super Sale',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28,
                         fontWeight: FontWeight.w800,
                         height: 1,
                       ),
                     ),
                     const SizedBox(height: 8),
+                    
                     Text(
                       item.name ?? 'Premium Watch',
                       maxLines: 2,
@@ -357,6 +365,7 @@ class _PromoSlide extends StatelessWidget {
               ),
             ),
           ),
+          )
         ],
       ),
     );
