@@ -3,6 +3,7 @@ $ git branch -m main
 $ git branch kimsour
 $ git branch nona
 
+git push -u origin fou
 
 
 
