@@ -7,56 +7,74 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color(0xFF0D1B2A),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor:  Color(0xFF0D1B2A),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         elevation: 0,
-        shape:  RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title:  Text('Search', style: TextStyle(color: Colors.white)),
+        title: Text('Search', style: TextStyle(color: Colors.white)),
       ),
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: ListView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            physics:  BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color:  Color(0xFF142A45),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(18),
                 ),
-                child:  TextField(
-                  style: TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
+                child: TextField(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  cursorColor: Theme.of(context).colorScheme.onSurface,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Colors.white70),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant
+                          .withValues(
+                            alpha: 0.9,
+                          ),
+                    ),
                     hintText: 'Search products',
-                    hintStyle: TextStyle(color: Colors.white54),
+                    hintStyle: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant
+                          .withValues(
+                            alpha: 0.7,
+                          ),
+                    ),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(vertical: 18),
                   ),
                 ),
               ),
-               SizedBox(height: 24),
-               Align(
+              SizedBox(height: 24),
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Recent searches',
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
               ),
-               SizedBox(height: 14),
+              SizedBox(height: 14),
               Wrap(
                 spacing: 12,
                 runSpacing: 12,
-                children:  [
+                children: [
                   _SearchTag('Chronograph'),
                   _SearchTag('Apple Watch'),
                   _SearchTag('Luxury'),
@@ -78,10 +96,16 @@ class _SearchTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Chip(
-      label: Text(label, style:  TextStyle(color: Colors.white)),
-      backgroundColor:  Color(0xFF142A45),
-      side:  BorderSide(color: Colors.white12),
+      label: Text(
+        label,
+        style: TextStyle(color: scheme.onSurface),
+      ),
+      backgroundColor: scheme.surfaceContainerHighest,
+      side: BorderSide(
+        color: scheme.onSurfaceVariant.withValues(alpha: 0.2),
+      ),
     );
   }
 }
