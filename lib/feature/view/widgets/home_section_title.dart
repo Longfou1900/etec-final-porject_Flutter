@@ -8,6 +8,9 @@ class HomeSectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Access the current color scheme based on the active theme
+    final scheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -17,23 +20,28 @@ class HomeSectionTitle extends StatelessWidget {
           children: [
             Text(
               title,
-              style:  TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color:
+                    scheme.onSurface, // Automatically adapts to Light/Dark mode
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               ),
             ),
-             SizedBox(height: 6),
+            const SizedBox(height: 6),
             Text(
               subtitle,
-              style: TextStyle(color: Colors.white70, fontSize: 14),
+              style: TextStyle(
+                color: scheme.onSurfaceVariant, // A softer tone for subtitles
+                fontSize: 14,
+              ),
             ),
           ],
         ),
         Text(
           'See all',
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.7),
+            color: scheme
+                .primary, // Highlights "See all" with your theme's primary color
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),

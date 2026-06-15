@@ -37,7 +37,7 @@ class HomeHeader extends StatelessWidget {
           titleSpacing: 4,
           title: const HomeAppBarTitle(),
           centerTitle: false,
-          actions: const [HomeAppBarActions()],
+          actions: [HomeAppBarActions()],
         ),
 
         // 2. Beautiful Isolated Banner Slider Area

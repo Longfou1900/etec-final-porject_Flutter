@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_getx/feature/controller/favorite_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
-import 'package:flutter_projects_getx/feature/view/screen/search_screen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/favorites_screen.dart';
 import '../screen/cart_screen.dart';
 
 class HomeAppBarActions extends StatelessWidget {
-  const HomeAppBarActions({super.key});
+   HomeAppBarActions({super.key});
+
+  final FavoriteController favController = Get.find<FavoriteController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +29,44 @@ class HomeAppBarActions extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildActionButton(
-            backgroundColor: containerBg,
-            borderColor: borderColor,
-            icon: Icon(Icons.search_rounded, color: scheme.onSurface),
-            onTap: () => Get.to(() => const SearchScreen()),
+         _buildActionButton(
+  backgroundColor: containerBg,
+  borderColor: borderColor,
+  // Wrap the Icon in a Stack to overlay the badge
+  icon: Stack(
+    clipBehavior: Clip.none, // Allows the badge to sit outside the icon
+    children: [
+      Icon(Icons.favorite_border_outlined, color: scheme.onSurface),
+      Obx(() {
+        final count = favController.favoriteItems.length;
+        if (count == 0) return const SizedBox.shrink();
+
+        return Positioned(
+          right: -4,
+          top: -4,
+          child: Container(
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: scheme.error, // Red color to indicate importance
+              shape: BoxShape.circle,
+            ),
+            constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+            child: Text(
+              '$count',
+              style: TextStyle(
+                color: scheme.onError, 
+                fontSize: 9, 
+                fontWeight: FontWeight.bold
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
+        );
+      }),
+    ],
+  ),
+  onTap: () => Get.to(() =>  FavoritesScreen()),
+),
           _buildActionButton(
             backgroundColor: containerBg,
             borderColor: borderColor,
