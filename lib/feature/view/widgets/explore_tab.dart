@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/modules/view/widgets/explore_card.dart';
-import 'package:flutter_projects_getx/modules/view/widgets/home_section_title.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/explore_card.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/home_section_title.dart';
 
 class ExploreTab extends StatelessWidget {
   const ExploreTab({super.key});

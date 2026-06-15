@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/modules/model/home_model.dart';
-import 'package:flutter_projects_getx/modules/view/widgets/home_section_title.dart';
-import 'package:flutter_projects_getx/modules/view/widgets/product_cards.dart';
+import 'package:flutter_projects_getx/feature/model/home_model.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/home_section_title.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/latest_product_list.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/product_cards.dart';
 
 class HomeTab extends StatelessWidget {
   final Data? data;

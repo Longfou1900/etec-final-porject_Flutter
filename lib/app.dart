@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/core/constants/theme/dark_mode.dart';
-import 'package:flutter_projects_getx/core/constants/theme/light_mode.dart';
-import 'package:flutter_projects_getx/modules/binding/home_binding.dart';
-import 'package:flutter_projects_getx/modules/view/home_view.dart';
+import 'package:flutter_projects_getx/core/theme/dark_mode.dart';
+import 'package:flutter_projects_getx/core/theme/light_mode.dart';
+import 'package:flutter_projects_getx/feature/binding/home_binding.dart';
+import 'package:flutter_projects_getx/feature/view/screen/home_view.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 class MyApp extends StatelessWidget {

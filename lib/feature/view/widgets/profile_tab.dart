@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/modules/view/widgets/profile_option_tile.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/profile_option_tile.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});

@@ -1,4 +1,4 @@
-import 'package:flutter_projects_getx/modules/model/cart_item.dart';
+import 'package:flutter_projects_getx/feature/model/cart_item.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
