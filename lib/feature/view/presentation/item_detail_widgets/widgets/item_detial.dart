@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/controller/cart_controller.dart';
 import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
 
-// Import the sub-widgets
 class ItemDetail extends StatelessWidget {
   final int id;
   final int index;
@@ -23,60 +22,128 @@ class ItemDetail extends StatelessWidget {
     required this.heroTag,
   });
 
-  static const primaryColor = Color(0xFF2563EB);
-  static const backgroundColor = Color(0xFFF8F9FB);
-  static final borderRadiusLarge = BorderRadius.circular(32);
-  static final borderRadiusMedium = BorderRadius.circular(18);
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
     final homeController = Get.find<HomeController>();
     final cartController = Get.find<CartController>();
-    
+
     final item = _resolveItem(homeController);
     final price = item?.displayPrice ?? r'$0';
-    final collectionName = id == 0 ? 'Popular collection' : 'Latest collection';
+    final collectionName = id == 0 ? 'Popular Collection' : 'Latest Collection';
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      // Seamlessly dynamically maps to our premium Light / Dark theme configurations
+      backgroundColor: scheme.surface,
       body: SafeArea(
         child: Column(
           children: [
+            // Fixed high-end persistent navigation bar
             const DetailHeader(),
-            ProductHeroImage(heroTag: heroTag, imageUrl: item?.images),
-            const SizedBox(height: 24),
+
             Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: borderRadiusLarge.topLeft,
-                    topRight: borderRadiusLarge.topRight,
-                  ),
-                ),
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductTitleAndPrice(name: item?.name, price: price),
-                      const SizedBox(height: 12),
-                      ProductRatingTag(collectionName: collectionName),
-                      const SizedBox(height: 22),
-                      ProductOverview(description: item?.description),
-                      const SizedBox(height: 24),
-                      const ProductFeaturesList(),
-                      const SizedBox(height: 28),
-                      ActionButtons(
-                        onWishlistPressed: () {},
-                        onAddToCartPressed: item == null 
-                            ? null 
-                            : () => _handleAddToCart(cartController, item),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    // Modern Immersive Hero Stage Container Window (Large Variant)
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      height: MediaQuery.sizeOf(context).height *
+                          0.42, // Expanded viewport for high-impact display
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: scheme.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(
+                          color: scheme.surfaceContainerHighest,
+                          width: 1,
+                        ),
                       ),
-                    ],
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Luxury-tier deep drop-shadow ground effect
+                          Positioned(
+                            bottom: 32,
+                            child: Container(
+                              width: 180,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: scheme.onSurface
+                                        .withValues(alpha: isDark ? 0.3 : 0.06),
+                                    blurRadius: 28,
+                                    spreadRadius: 6,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // The large uncropped item display asset logic
+                          ProductHeroImage(
+                            heroTag: heroTag,
+                            imageUrl: item?.images,
+                            images: [],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    // Technical Specifications Details Canvas Sheet
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProductTitleAndPrice(name: item?.name, price: price),
+                          const SizedBox(height: 14),
+
+                          ProductRatingTag(collectionName: collectionName),
+                          const SizedBox(height: 20),
+
+                          // Fine modern structural horizontal dividing boundary rule
+                          Divider(
+                              color: scheme.surfaceContainerHighest, height: 1),
+                          const SizedBox(height: 20),
+
+                          ProductOverview(description: item?.description),
+                          const SizedBox(height: 24),
+
+                          const ProductFeaturesList(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Sticky Bottom Interactive Purchase Drawer Control Deck
+            Container(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+              decoration: BoxDecoration(
+                color: scheme.surface,
+                border: Border(
+                  top: BorderSide(
+                    color: scheme.surfaceContainerHighest,
+                    width: 1,
                   ),
                 ),
+              ),
+              child: ActionButtons(
+                onWishlistPressed: () {},
+                onAddToCartPressed: item == null
+                    ? null
+                    : () => _handleAddToCart(cartController, item, scheme),
               ),
             ),
           ],
@@ -85,16 +152,23 @@ class ItemDetail extends StatelessWidget {
     );
   }
 
+  /// Extracts the context safe model layer data dynamically via the HomeController
   dynamic _resolveItem(HomeController controller) {
     final data = controller.homeModel.data;
     if (id == 0) {
-      return data?.popular != null && index < data!.popular!.length ? data.popular![index] : null;
+      return data?.popular != null && index < data!.popular!.length
+          ? data.popular![index]
+          : null;
     } else {
-      return data?.lates != null && index < data!.lates!.length ? data.lates![index] : null;
+      return data?.lates != null && index < data!.lates!.length
+          ? data.lates![index]
+          : null;
     }
   }
 
-  void _handleAddToCart(CartController cartController, dynamic item) {
+  /// Triggers internal Cart Controller state pipeline updates and prints validation snackbars
+  void _handleAddToCart(
+      CartController cartController, dynamic item, ColorScheme scheme) {
     final productId = '${id}_$index';
     cartController.addToCart(
       productId: productId,
@@ -104,15 +178,23 @@ class ItemDetail extends StatelessWidget {
       qty: 1,
     );
 
+    // Premium Floating Context Micro Feedback Alert Window
     Get.snackbar(
-      'Added to cart',
-      item.name ?? 'Item',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.black.withValues(alpha: 0.85),
-      colorText: Colors.white,
+      'Cart Updated',
+      '${item.name ?? 'Item'} added successfully.',
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: scheme.primary,
+      colorText: scheme.onPrimary,
       margin: const EdgeInsets.all(16),
-      borderRadius: 16,
-      duration: const Duration(seconds: 1),
+      borderRadius: 14,
+      duration: const Duration(milliseconds: 1500),
+      boxShadows: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        )
+      ],
     );
   }
 }

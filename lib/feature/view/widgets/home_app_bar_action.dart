@@ -12,36 +12,41 @@ class HomeAppBarActions extends StatelessWidget {
     final homeController = Get.find<HomeController>();
 
     return Obx(() {
+      final theme = Theme.of(context);
+      final scheme = theme.colorScheme;
       final isDark = homeController.isDarkMode.value;
-      final wrapperColor = isDark
-          ? Colors.blueGrey.withValues(alpha: 0.09)
-          : Colors.black.withValues(alpha: 0.05);
-      final iconColor = isDark ? Colors.blue : Colors.black;
+      // Modern dynamic colors pulling from the app's native context theme
+      final containerBg = isDark 
+          ? scheme.surfaceContainerLow 
+          : scheme.surfaceContainerHighest.withValues(alpha: 0.4);
+      final borderColor = isDark 
+          ? scheme.onSurface.withValues(alpha: 0.05) 
+          : scheme.primary.withValues(alpha: 0.04);
 
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildActionButton(
-            backgroundColor: wrapperColor,
-            icon: Icon(Icons.search, color: iconColor),
-            onTap: () => Get.to(() => SearchScreen()),
+            backgroundColor: containerBg,
+            borderColor: borderColor,
+            icon: Icon(Icons.search_rounded, color: scheme.onSurface),
+            onTap: () => Get.to(() => const SearchScreen()),
           ),
           _buildActionButton(
-            backgroundColor: wrapperColor,
+            backgroundColor: containerBg,
+            borderColor: borderColor,
             icon: Icon(
-              isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-              color: iconColor,
+              isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+              color: isDark ? const Color(0xFF8AF05B) : scheme.primary, // Pop accent color for mode trigger
             ),
             onTap: homeController.toggleTheme,
           ),
           _buildActionButton(
             margin: const EdgeInsets.only(right: 16),
-            backgroundColor: wrapperColor,
-            icon: Icon(
-              Icons.shopping_bag_outlined,
-              color: isDark ? Colors.blue : Colors.black.withValues(alpha: 0.7),
-            ),
-            onTap: () => Get.to(() => CartScreen()),
+            backgroundColor: containerBg,
+            borderColor: borderColor,
+            icon: Icon(Icons.shopping_bag_rounded, color: scheme.onSurface),
+            onTap: () => Get.to(() => const CartScreen()),
           ),
         ],
       );
@@ -50,6 +55,7 @@ class HomeAppBarActions extends StatelessWidget {
 
   Widget _buildActionButton({
     required Color backgroundColor,
+    required Color borderColor,
     required Widget icon,
     required VoidCallback onTap,
     EdgeInsetsGeometry margin = const EdgeInsets.only(right: 8),
@@ -58,11 +64,15 @@ class HomeAppBarActions extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16), // Rounded capsule look to align with the bottom nav
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: IconButton(
         onPressed: onTap,
         icon: icon,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        iconSize: 22,
       ),
     );
   }

@@ -11,32 +11,41 @@ class HomeBody extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-      floatHeaderSlivers: true,
-      physics:  BouncingScrollPhysics(),
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverOverlapAbsorber(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            sliver: Obx(
-              () => controller.selectedIndex.value == 0
-                  ? const HomeAppBar()
-                  : const SliverToBoxAdapter(child: SizedBox.shrink()),
-            ),
-          ),
-        ];
-      },
-      body: Obx(
-        () => controller.lodaing.value
-            ?  Center(child: CircularProgressIndicator())
-            : IndexedStack(
+    final scheme = Theme.of(context).colorScheme;
+
+    return SafeArea(
+      child: Column(
+        children: [
+          // 1. Dynamic Header display logic (Only shows on the Home Tab index 0)
+          Obx(() {
+            return controller.selectedIndex.value == 0
+                ? const HomeHeader()
+                : const SizedBox.shrink();
+          }),
+
+          // 2. Main Content Body Area
+          Expanded(
+            child: Obx(() {
+              if (controller.lodaing.value) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: scheme.primary,
+                    strokeWidth: 3,
+                  ),
+                );
+              }
+              return IndexedStack(
                 index: controller.selectedIndex.value,
                 children: [
+                  // Pass the data cleanly down to your home content list tab
                   HomeTab(controller.homeModel.data),
-                   ExploreTab(),
-                   ProfileTab(),
+                  const ExploreTab(),
+                  const ProfileTab(),
                 ],
-              ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

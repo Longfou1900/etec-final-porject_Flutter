@@ -7,88 +7,131 @@ import 'package:flutter_projects_getx/feature/view/widgets/promo_slide.dart';
 import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
 
-class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({super.key});
+class HomeHeader extends StatelessWidget {
+  const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
     final homeController = Get.find<HomeController>();
-    final sliderController = Get.put(HomeSliderController());
+    
+    // Inject or find the slider animation state management
+    final sliderController = Get.isRegistered<HomeSliderController>()
+        ? Get.find<HomeSliderController>()
+        : Get.put(HomeSliderController());
 
-    return SliverAppBar(
-      pinned: true,
-      floating: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      expandedHeight: 280,
-      toolbarHeight: 76,
-      elevation: 0,
-      leadingWidth: 76,
-      leading: const HomeAppBarLeading(),
-      titleSpacing: 10,
-      title: const HomeAppBarTitle(),
-      centerTitle: false,
-      actions: const [HomeAppBarActions()],
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(left: 20, right: 20, bottom: 18),
-        expandedTitleScale: 1,
-        background: Container(
-          color: Theme.of(context).colorScheme.surface,
-          padding: const EdgeInsets.fromLTRB(20, 98, 20, 18),
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // 1. Normal Modern Standard App Bar Layer
+        AppBar(
+          backgroundColor: scheme.surface,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          toolbarHeight: 76,
+          leadingWidth: 76,
+          leading: const HomeAppBarLeading(),
+          titleSpacing: 4,
+          title: const HomeAppBarTitle(),
+          centerTitle: false,
+          actions: const [HomeAppBarActions()],
+        ),
+
+        // 2. Beautiful Isolated Banner Slider Area
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Obx(() {
             final items = sliderController.slideItems;
+
+            // Modern Loading/Shimmer framework structure
             if (homeController.lodaing.value || items.isEmpty) {
               return Container(
+                height: 160, // Fixed clean frame height matching modern standard aspect ratios
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(28),
+                  color: isDark 
+                      ? scheme.surfaceContainerLow 
+                      : scheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: scheme.onSurface.withValues(alpha: 0.05),
+                  ),
                 ),
               );
             }
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(28),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  PageView.builder(
-                    controller: sliderController.pageController,
-                    itemCount: items.length,
-                    onPageChanged: sliderController.updateSlideIndex,
-                    itemBuilder: (context, index) {
-                      return PromoSlide(item: items[index]);
-                    },
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 14,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        items.length,
-                        (index) => Obx(() {
-                          final isSelected = index == sliderController.currentSlide.value;
-                          return AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            width: isSelected ? 22 : 7,
-                            height: 7,
-                            margin: const EdgeInsets.symmetric(horizontal: 3),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? const Color(0xFF8AF05B)
-                                  : Colors.white.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(99),
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
+
+            return Container(
+              height: 160, // Fixed layout ceiling prevents vertical overflow strips completely
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDark 
+                        ? Colors.black.withValues(alpha: 0.25) 
+                        : scheme.primary.withValues(alpha: 0.04),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
                 ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Slide Builder Layer
+                    PageView.builder(
+                      controller: sliderController.pageController,
+                      itemCount: items.length,
+                      onPageChanged: sliderController.updateSlideIndex,
+                      itemBuilder: (context, index) {
+                        return PromoSlide(item: items[index]);
+                      },
+                    ),
+
+                    // Navigation Dot Indicator Overlay Dock
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 12,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          items.length,
+                          (index) => Obx(() {
+                            final isSelected = index == sliderController.currentSlide.value;
+
+                            final activeColor = isDark 
+                                ? const Color(0xFF8AF05B) 
+                                : scheme.primary;
+                            final inactiveColor = isDark 
+                                ? Colors.white.withValues(alpha: 0.25) 
+                                : scheme.onSurface.withValues(alpha: 0.15);
+
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOutCubic,
+                              width: isSelected ? 18 : 6,
+                              height: 6,
+                              margin: const EdgeInsets.symmetric(horizontal: 3),
+                              decoration: BoxDecoration(
+                                color: isSelected ? activeColor : inactiveColor,
+                                borderRadius: BorderRadius.circular(99),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
         ),
-      ),
+      ],
     );
   }
 }

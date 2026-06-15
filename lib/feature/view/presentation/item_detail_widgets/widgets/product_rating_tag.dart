@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/feature/view/presentation/item_detail_widgets/widgets/item_detial.dart';
 
 class ProductRatingTag extends StatelessWidget {
   final String collectionName;
 
   const ProductRatingTag({
-    super.key, 
+    super.key,
     required this.collectionName,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Row(
       children: [
+        // Styled micro pill tag matching the colorScheme setup
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color(0xFFE8F1FF),
-            borderRadius: BorderRadius.circular(16),
+            color: scheme.secondary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
-            children: const [
-              Icon(Icons.star, size: 16, color: ItemDetail.primaryColor),
-              SizedBox(width: 8),
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.star_rounded, size: 16, color: scheme.secondary),
+              const SizedBox(width: 4),
               Text(
                 '4.9',
-                style: TextStyle(color: ItemDetail.primaryColor, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                  color: scheme.secondary,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
@@ -33,7 +41,9 @@ class ProductRatingTag extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           collectionName,
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );

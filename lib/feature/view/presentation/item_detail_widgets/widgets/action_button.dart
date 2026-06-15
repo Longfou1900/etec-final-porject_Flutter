@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/feature/view/presentation/item_detail_widgets/widgets/item_detial.dart';
-
 
 class ActionButtons extends StatelessWidget {
   final VoidCallback onWishlistPressed;
@@ -14,34 +12,40 @@ class ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Row(
       children: [
-        Expanded(
-          child: OutlinedButton(
-            onPressed: onWishlistPressed,
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: ItemDetail.primaryColor),
-              shape: RoundedRectangleBorder(borderRadius: ItemDetail.borderRadiusMedium),
-              padding: const EdgeInsets.symmetric(vertical: 18),
-            ),
-            child: const Text(
-              'Wishlist',
-              style: TextStyle(color: ItemDetail.primaryColor, fontWeight: FontWeight.w700),
-            ),
+        // Premium minimal stroke layout icon option
+        IconButton(
+          onPressed: onWishlistPressed,
+          icon: const Icon(Icons.favorite_border_rounded),
+          style: IconButton.styleFrom(
+            foregroundColor: scheme.onSurface,
+            backgroundColor: scheme.surfaceContainerLow,
+            side: BorderSide(color: scheme.surfaceContainerHighest, width: 1),
+            padding: const EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
+        
+        // Main structural interaction trigger block
         Expanded(
           child: ElevatedButton(
             onPressed: onAddToCartPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ItemDetail.primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: ItemDetail.borderRadiusMedium),
+              backgroundColor: scheme.primary,
+              foregroundColor: scheme.onPrimary,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               padding: const EdgeInsets.symmetric(vertical: 18),
             ),
             child: const Text(
               'Add to Cart',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, letterSpacing: -0.1),
             ),
           ),
         ),

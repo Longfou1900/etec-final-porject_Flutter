@@ -1,45 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/feature/view/presentation/item_detail_widgets/widgets/item_detial.dart';
 
 class ProductFeaturesList extends StatelessWidget {
   const ProductFeaturesList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Features',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          style: theme.textTheme.titleMedium,
         ),
         const SizedBox(height: 14),
-        _buildFeatureTile(Icons.watch, 'Stainless steel finish'),
+        _buildFeatureTile(context, Icons.watch_rounded, 'Stainless steel finish'),
         const SizedBox(height: 12),
-        _buildFeatureTile(Icons.bolt, 'Automatic movement'),
+        _buildFeatureTile(context, Icons.bolt_rounded, 'Automatic movement'),
         const SizedBox(height: 12),
-        _buildFeatureTile(Icons.water_drop, 'Water resistant'),
+        _buildFeatureTile(context, Icons.water_drop_rounded, 'Water resistant 50m'),
       ],
     );
   }
 
-  Widget _buildFeatureTile(IconData icon, String text) {
+  Widget _buildFeatureTile(BuildContext context, IconData icon, String text) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F6FF),
+            color: scheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: scheme.surfaceContainerHighest, width: 1),
           ),
-          // REMOVED 'const' from here because 'icon' is dynamic
-          child: Icon(icon, size: 18, color: ItemDetail.primaryColor),
+          child: Icon(icon, size: 20, color: scheme.onSurface),
         ),
         const SizedBox(width: 14),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
