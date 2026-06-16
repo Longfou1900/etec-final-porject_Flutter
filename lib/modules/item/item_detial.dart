@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_getx/modules/controller/cart_controller.dart';
 import 'package:flutter_projects_getx/modules/controller/home_controller.dart';
 import 'package:get/get.dart';
 
@@ -17,8 +18,10 @@ class ItemDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
+    final cartController = Get.find<CartController>();
     final popularItems = controller.homeModel.data?.popular;
     final latestItems = controller.homeModel.data?.lates;
+
     final item = id == 0
         ? (popularItems != null ? popularItems[index] : null)
         : (latestItems != null ? latestItems[index] : null);
@@ -161,8 +164,10 @@ class ItemDetail extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        item?.description?.isNotEmpty == true
-                            ? item!.description!
+                        (item != null &&
+                                item.description != null &&
+                                item.description!.isNotEmpty)
+                            ? item.description!
                             : 'A premium watch with a modern silhouette, sharp detailing, and a refined finish built for everyday luxury.',
                         style: TextStyle(
                           color: Colors.grey.shade700,
@@ -213,7 +218,31 @@ class ItemDetail extends StatelessWidget {
                           const SizedBox(width: 16),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: item == null
+                                  ? null
+                                  : () {
+                                      final productId = '${id}_$index';
+                                      cartController.addToCart(
+                                        productId: productId,
+                                        name: item.name ?? 'Unknown watch',
+                                        image: item.images ?? '',
+                                        priceText: (item.displayPrice)
+                                            .toString(),
+                                        qty: 1,
+                                      );
+
+                                      Get.snackbar(
+                                        'Added to cart',
+                                        item.name ?? 'Item',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.black
+                                            .withValues(alpha: 0.85),
+                                        colorText: Colors.white,
+                                        margin: const EdgeInsets.all(16),
+                                        borderRadius: 16,
+                                        duration: const Duration(seconds: 1),
+                                      );
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF2563EB),
                                 shape: RoundedRectangleBorder(
