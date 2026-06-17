@@ -39,7 +39,6 @@ class PromoSlide extends StatelessWidget {
                 ),
               ),
             ),
-
             // 2. Main Content Row Split
             Row(
               children: [
@@ -47,14 +46,14 @@ class PromoSlide extends StatelessWidget {
                 Expanded(
                   flex: 55,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 8, 16),
+                    padding:  EdgeInsets.fromLTRB(20, 16, 8, 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Pill Tag
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding:  EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: scheme.primary.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(6),
@@ -69,8 +68,7 @@ class PromoSlide extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        
+                         SizedBox(height: 10), 
                         // Product Title
                         Text(
                           item.name ?? 'Premium Edition',
@@ -83,7 +81,7 @@ class PromoSlide extends StatelessWidget {
                             letterSpacing: -0.3,
                           ),
                         ),
-                        const SizedBox(height: 6),
+                         SizedBox(height: 6),
                         
                         // Price & CTA Row aligned seamlessly
                         Row(
@@ -97,7 +95,7 @@ class PromoSlide extends StatelessWidget {
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
-                            const SizedBox(width: 12),
+                             SizedBox(width: 12),
                             Container(
                               width: 3,
                               height: 3,
@@ -106,7 +104,7 @@ class PromoSlide extends StatelessWidget {
                                 color: scheme.onSurfaceVariant.withValues(alpha: 0.4),
                               ),
                             ),
-                            const SizedBox(width: 12),
+                             SizedBox(width: 12),
                             Text(
                               'Limited Offer',
                               style: theme.textTheme.bodySmall?.copyWith(
@@ -120,7 +118,6 @@ class PromoSlide extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 // Right Image Canvas
                 Expanded(
                   flex: 45,
@@ -140,7 +137,6 @@ class PromoSlide extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
                       // Intersecting floating product presentation layer
                       Transform.rotate(
                         angle: -0.12, // Distinct angled turn used in luxury brand product layouts
@@ -163,7 +159,6 @@ class PromoSlide extends StatelessWidget {
                 ),
               ],
             ),
-            
             // 3. Subtle Interactive Edge Border overlay
             Positioned.fill(
               child: IgnorePointer(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final AuthService _authService = Get.find<AuthService>();
 
   LoginScreen({super.key});
 
@@ -42,7 +40,6 @@ class LoginScreen extends StatelessWidget {
                 obscureText: true,
               ),
               const SizedBox(height: 24),
-
               // Sign In Button
               SizedBox(
                 width: double.infinity,
@@ -59,7 +56,6 @@ class LoginScreen extends StatelessWidget {
                   child: const Text("Sign In"),
                 ),
               ),
-
               // Theme Toggle Button (Connects to your theme controller)
               TextButton(
                 onPressed: () => Get.changeThemeMode(
