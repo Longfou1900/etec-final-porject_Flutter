@@ -75,12 +75,4 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void _handleLogin(BuildContext context) async {
-    try {
-      await _authService.login(emailController.text, passwordController.text);
-      Get.offNamed('/home'); // Use GetX navigation to go home
-    } catch (e) {
-      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
-    }
-  }
 }
