@@ -7,6 +7,7 @@ class HomeBinding extends Bindings {
   void dependencies() {
     Get.put(HomeController());
     Get.put(CartController());
+    Get.lazyPut<HomeController>(() => HomeController());
   }
 }
 

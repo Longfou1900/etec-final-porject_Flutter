@@ -1,59 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = Get.find<AuthService>();
+
   LoginScreen({super.key});
-
-  // Controllers are initialized as final members of the Stateless widget
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
-
-  // Function remains largely the same, but you must pass context 
-  // or use a GlobalKey if you want to navigate from here
-  void _handleLogin(BuildContext context) async {
-    bool success = await _authService.login(
-      _emailController.text, 
-      _passwordController.text,
-    );
-    
-    if (context.mounted) { // Always check if context is still valid after async call
-      if (success) {
-        // Navigate to Home Screen
-        // Navigator.pushNamed(context, '/home');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login Failed')),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController, 
-              decoration: const InputDecoration(labelText: 'Email')
-            ),
-            TextField(
-              controller: _passwordController, 
-              decoration: const InputDecoration(labelText: 'Password'), 
-              obscureText: true
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _handleLogin(context), 
-              child: const Text('Login')
-            )
-          ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo placeholder or Image
+              Icon(Icons.shield_moon_rounded,
+                  size: 80, color: Theme.of(context).primaryColor),
+              const SizedBox(height: 20),
+              Text("Welcome back",
+                  style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: 30),
+
+              // Email Field
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                    labelText: 'Work Email', border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 16),
+
+              // Password Field
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(
+                    labelText: 'Password', border: OutlineInputBorder()),
+                obscureText: true,
+              ),
+              const SizedBox(height: 24),
+
+              // Sign In Button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: // Inside your LoginScreen.dart
+                    ElevatedButton(
+                  onPressed: () async {
+                    // 1. Perform your authentication logic here
+                    // await controller.login();
+
+                    // 2. Navigate to the HomeView route
+                    Get.offAllNamed('/home');
+                  },
+                  child: const Text("Sign In"),
+                ),
+              ),
+
+              // Theme Toggle Button (Connects to your theme controller)
+              TextButton(
+                onPressed: () => Get.changeThemeMode(
+                    Get.isDarkMode ? ThemeMode.light : ThemeMode.dark),
+                child: Text(Get.isDarkMode
+                    ? "Switch to Light Mode"
+                    : "Switch to Dark Mode"),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _handleLogin(BuildContext context) async {
+    try {
+      await _authService.login(emailController.text, passwordController.text);
+      Get.offNamed('/home'); // Use GetX navigation to go home
+    } catch (e) {
+      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    }
   }
 }
