@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_getx/feature/view/widgets/build_headerWave.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -9,66 +10,85 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo placeholder or Image
-              Icon(Icons.shield_moon_rounded,
-                  size: 80, color: Theme.of(context).primaryColor),
-              const SizedBox(height: 20),
-              Text("Welcome back",
-                  style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 30),
-
-              // Email Field
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                    labelText: 'Work Email', border: OutlineInputBorder()),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: Column(
+        children: [
+          // Added image URL here
+          buildHeaderWave(context, "Log In!",
+              imageUrl:
+                  "https://i.pinimg.com/1200x/57/05/5b/57055bd6256c8768669aadb96b35d128.jpg"),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+              child: Column(
+                children: [
+                  _buildInputField(context, emailController, "Email Address",
+                      Icons.email_outlined),
+                  SizedBox(height: 20),
+                  _buildInputField(context, passwordController, "Password",
+                      Icons.lock_outline,
+                      obscure: true),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                        onPressed: () {}, child: Text("Forgot password?")),
+                  ),
+                  SizedBox(height: 40),
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: theme.primaryColor.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: Offset(0, 5))
+                      ],
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.primaryColor,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      onPressed: () => Get.offAllNamed('/home'),
+                      child: Text("Log in",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-
-              // Password Field
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                    labelText: 'Password', border: OutlineInputBorder()),
-                obscureText: true,
-              ),
-              const SizedBox(height: 24),
-              // Sign In Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: // Inside your LoginScreen.dart
-                    ElevatedButton(
-                  onPressed: () async {
-                    // 1. Perform your authentication logic here
-                    // await controller.login();
-
-                    // 2. Navigate to the HomeView route
-                    Get.offAllNamed('/home');
-                  },
-                  child: const Text("Sign In"),
-                ),
-              ),
-              // Theme Toggle Button (Connects to your theme controller)
-              TextButton(
-                onPressed: () => Get.changeThemeMode(
-                    Get.isDarkMode ? ThemeMode.light : ThemeMode.dark),
-                child: Text(Get.isDarkMode
-                    ? "Switch to Light Mode"
-                    : "Switch to Dark Mode"),
-              ),
-            ],
-          ),
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
 
+  Widget _buildInputField(BuildContext context,
+      TextEditingController controller, String label, IconData icon,
+      {bool obscure = false}) {
+    final theme = Theme.of(context);
+
+    return TextField(
+      controller: controller,
+      obscureText: obscure,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: theme.primaryColor),
+        filled: true,
+        fillColor: theme.cardColor,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none),
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      ),
+    );
+  }
 }

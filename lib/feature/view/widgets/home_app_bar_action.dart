@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_projects_getx/feature/controller/favorite_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
-import 'package:flutter_projects_getx/feature/view/screen/favorites_screen.dart';
-import '../screen/cart_screen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/favorite_screen/favorites_screen.dart';
+import '../screen/cart_screen/cart_screen.dart';
 
 class HomeAppBarActions extends StatelessWidget {
    HomeAppBarActions({super.key});
