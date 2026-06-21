@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Ensure correct import
+import 'package:flutter_projects_getx/core/auth/forgot_password_screen.dart';
+import 'package:flutter_projects_getx/core/auth/register_phone_screen.dart';
+import 'package:flutter_projects_getx/core/auth/signup_screen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/onborading/onborading_view.dart';
+import 'package:get/get.dart';
 import 'package:flutter_projects_getx/core/auth/auth_check_view.dart';
 import 'package:flutter_projects_getx/core/auth/login_screen.dart';
 import 'package:flutter_projects_getx/core/theme/dark_mode.dart';
@@ -12,30 +16,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/auth-check', // Unique initial route
-      getPages: [
-        // Auth check logic
-        GetPage(
-          name: '/auth-check', 
-          page: () => const AuthCheckView()
-        ),
-        // Login route
-        GetPage(
-          name: '/login', 
-          page: () => LoginScreen()
-        ),
-        // Home route
-        GetPage(
-          name: '/home',
-          page: () =>  HomeScreen(title: 'Argumind'),
-          binding: HomeBinding(),
-        ),
-      ],
-      theme: LightMode.theme,
-      darkTheme: DarkMode.theme,
-      themeMode: ThemeMode.system,
-    );
+    return // Inside your MyApp class
+GetMaterialApp(
+  debugShowCheckedModeBanner: false,
+  initialRoute: '/onboarding', // Start with the Onboarding screen
+  getPages: [
+    // Onboarding sequence
+    GetPage(name: '/onboarding', page: () => OnboardingView()),
+    
+    // Existing Auth
+    GetPage(name: '/auth-check', page: () => const AuthCheckView()),
+    GetPage(name: '/login', page: () => LoginScreen()),
+    
+    // New Registration Flow
+    GetPage(name: '/signup', page: () => SignUpScreen()),
+    GetPage(name: '/forgot-password', page: () => ForgotPasswordScreen()),
+    GetPage(name: '/register-phone', page: () => RegisterPhoneScreen()),
+    
+    // Home route
+    GetPage(
+      name: '/home',
+      page: () => HomeScreen(title: 'Argumind'),
+      binding: HomeBinding(),
+    ),
+  ],
+  theme: LightMode.theme,
+  darkTheme: DarkMode.theme,
+  themeMode: ThemeMode.system,
+);
   }
 }
