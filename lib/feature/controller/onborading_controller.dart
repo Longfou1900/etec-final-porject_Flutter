@@ -1,15 +1,23 @@
-import 'dart:async'; // Required for Timer
-import 'package:get/get.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_projects_getx/feature/model/onboarding_item.dart';
+import 'package:get/get.dart';
 
 class OnboardingController extends GetxController {
-  var currentPage = 0.obs;
-  var isLoading = true.obs;
-  var onboardingData = [].obs;
-  final PageController pageController = PageController();
+  static const _initialPage = 1000;
+  static const _autoScrollDelay = Duration(seconds: 3);
+  static const _scrollDuration = Duration(milliseconds: 520);
 
-  // Timer for auto-scrolling
+  final currentPage = 0.obs;
+  final isLoading = true.obs;
+  final onboardingData = <OnboardingItem>[].obs;
+  final PageController pageController = PageController(
+    initialPage: _initialPage,
+  );
+
   Timer? _timer;
+  int _pageIndex = _initialPage;
 
   @override
   void onInit() {
@@ -20,61 +28,89 @@ class OnboardingController extends GetxController {
   void loadOnboardingData() {
     isLoading(true);
 
-    // Static onboarding data instead of fetching from the API
-    onboardingData.value = [
-      {
-        'title': 'Welcome',
-        'image': 'assets/images/onboarding1.png',
-        'description': 'Track everything in one place.'
-      },
-      {
-        'title': 'Stay Organized',
-        'image': 'assets/images/onboarding1.png',
-        'description': 'Plan your day with ease.'
-      },
-      {
-        'title': 'Get Started',
-        'image': 'assets/images/onboarding1.png',
-        'description': "You're all set, let's begin!"
-      },
-    ];
+    onboardingData.assignAll(const [
+      OnboardingItem(
+        title: 'Welcome',
+        imagePath: 'assets/images/onboarding1.png',
+        description: 'Track everything in one place.',
+      ),
+      OnboardingItem(
+        title: 'Stay Organized',
+        imagePath: 'assets/images/onboarding2.png',
+        description: 'Plan your day with ease.',
+      ),
+      OnboardingItem(
+        title: 'Get Started',
+        imagePath: 'assets/images/onboarding3.png',
+        description: "You're all set, let's begin!",
+      ),
+    ]);
 
     isLoading(false);
-
-    // Start auto-scroll after data is loaded
     _startAutoScroll();
   }
 
   void _startAutoScroll() {
-    // Cancel any existing timer before starting a new one
     _timer?.cancel();
 
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      if (onboardingData.isEmpty) return;
-
-      int nextIndex = currentPage.value + 1;
-      if (nextIndex < onboardingData.length) {
-        pageController.animateToPage(
-          nextIndex,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.easeInOut,
-        );
-      } else {
-        // Loop back to the first page
-        pageController.animateToPage(
-          0,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.easeInOut,
-        );
-      }
+    _timer = Timer.periodic(_autoScrollDelay, (timer) {
+      if (onboardingData.isEmpty || !pageController.hasClients) return;
+      _animateToPage(_pageIndex + 1);
     });
   }
 
-  void onPageChanged(int index) => currentPage.value = index;
+  bool get isLastPage => currentPage.value == onboardingData.length - 1;
+
+  int itemIndexAt(int index) => index % onboardingData.length;
+
+  void pauseAutoScroll() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  void restartAutoScroll() {
+    pauseAutoScroll();
+    _startAutoScroll();
+  }
+
+  void onPageChanged(int index) {
+    _pageIndex = index;
+    currentPage.value = itemIndexAt(index);
+  }
+
+  void previousPage() {
+    pauseAutoScroll();
+    _animateToPage(_pageIndex - 1);
+    restartAutoScroll();
+  }
+
+  void nextPage() {
+    if (isLastPage) {
+      goToLogin();
+      return;
+    }
+
+    pauseAutoScroll();
+    _animateToPage(_pageIndex + 1);
+    restartAutoScroll();
+  }
+
+  void goToLogin() {
+    _timer?.cancel();
+    Get.offAllNamed('/login');
+  }
+
+  void _animateToPage(int page) {
+    pageController.animateToPage(
+      page,
+      duration: _scrollDuration,
+      curve: Curves.easeOutCubic,
+    );
+  }
 
   @override
   void onClose() {
-    _timer?.cancel(); // Prevents memory leaks
+    _timer?.cancel();
     pageController.dispose();
     super.onClose();
   }

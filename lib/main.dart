@@ -10,9 +10,9 @@ void main() {
   Get.put(FavoriteController());
   // 1. Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
-  
   // 2. Put the service into the GetX dependency container
-  Get.put(AuthService()); // Initialize globally
+  // Initialize globally
+  Get.put(AuthService()); 
   runApp(const MyApp());
 }
 

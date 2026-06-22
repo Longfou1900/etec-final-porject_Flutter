@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
               // 1. Perform your logout logic here (e.g., clear token, clear storage)
               // await authController.logout();
               // 2. Navigate to the Login screen and clear the navigation stack
-              Get.offAllNamed('/onboarding');
+              Get.offAllNamed('/splash');
             },
             isLogout: true,
           ),

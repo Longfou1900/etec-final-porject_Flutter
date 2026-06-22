@@ -1,129 +1,186 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_projects_getx/core/auth/auth_theme.dart';
 import 'package:flutter_projects_getx/feature/controller/onborading_controller.dart';
+import 'package:flutter_projects_getx/feature/view/screen/onborading/widgets/onboarding_controls.dart';
+import 'package:flutter_projects_getx/feature/view/screen/onborading/widgets/onboarding_page.dart';
+import 'package:flutter_projects_getx/feature/view/screen/onborading/widgets/onboarding_page_style.dart';
+import 'package:get/get.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
-  // Define brand colors
-  static const Color brandCharcoal = Color(0xFF2D3436);
-  static const Color brandLimeGreen = Color(0xFF00FF88);
-  static const Color brandNeutralBg = Colors.white;
+  @override
+  Widget build(BuildContext context) {
+    Get.put(OnboardingController());
+
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: _OnboardingBody(),
+    );
+  }
+}
+
+class _OnboardingBody extends StatelessWidget {
+  const _OnboardingBody();
 
   @override
   Widget build(BuildContext context) {
-    final OnboardingController controller = Get.put(OnboardingController());
+    final controller = Get.find<OnboardingController>();
 
     return Scaffold(
-      backgroundColor: brandNeutralBg,
+      backgroundColor: const Color(0xFFE8EAFD),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(
-              child: CircularProgressIndicator(color: brandCharcoal));
+          return const _LoadingView();
         }
 
-        return SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: controller.pageController,
-                  onPageChanged: controller.onPageChanged,
-                  itemCount: controller.onboardingData.length,
-                  itemBuilder: (context, index) {
-                    final item = controller.onboardingData[index];
-                    return _buildPageContent(
-                      item['title']?.toString() ?? "",
-                      item['image']?.toString() ?? "",
-                      item['description']?.toString() ?? "",
-                    );
-                  },
-                ),
+        return Stack(
+          children: [
+            const _ScreenBackground(),
+            const _OnboardingCardBackground(),
+            NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollStartNotification &&
+                    notification.dragDetails != null) {
+                  controller.pauseAutoScroll();
+                }
+
+                if (notification is ScrollEndNotification) {
+                  controller.restartAutoScroll();
+                }
+
+                return false;
+              },
+              child: PageView.builder(
+                controller: controller.pageController,
+                onPageChanged: controller.onPageChanged,
+                itemBuilder: (context, index) {
+                  final itemIndex = controller.itemIndexAt(index);
+
+                  return OnboardingPage(
+                    item: controller.onboardingData[itemIndex],
+                    style: OnboardingPageStyle.at(itemIndex),
+                  );
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    // Pagination Dots
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        controller.onboardingData.length,
-                        (index) => Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: controller.currentPage.value == index
-                                ? brandLimeGreen
-                                : Colors.grey.shade300,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // Action Button
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: brandCharcoal,
-                        foregroundColor: brandNeutralBg,
-                        minimumSize: const Size(double.infinity, 56),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                      ),
-                      onPressed: () => controller.currentPage.value ==
-                              controller.onboardingData.length - 1
-                          ? Get.offAllNamed('/login')
-                          : controller.pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease),
-                      child: const Text("Next", style: TextStyle(fontSize: 18)),
-                    ),
-                    TextButton(
-                      onPressed: () => Get.offAllNamed('/login'),
-                      child: const Text("Skip",
-                          style: TextStyle(color: Colors.grey)),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+            OnboardingControls(controller: controller),
+          ],
         );
       }),
     );
   }
+}
 
-  Widget _buildPageContent(String title, String imagePath, String subtitle) {
-    final bool hasValidImage = imagePath.isNotEmpty;
+class _OnboardingCardBackground extends StatelessWidget {
+  const _OnboardingCardBackground();
 
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.white,
+      child: const Stack(
+        fit: StackFit.expand,
         children: [
-          Expanded(
-            child: !hasValidImage
-                ? const Icon(Icons.image_not_supported,
-                    size: 100, color: Colors.black)
-                : Image.asset(
-                    imagePath,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      debugPrint('Error loading asset at $imagePath: $error');
-                      return const Icon(Icons.broken_image,
-                          size: 80, color: Colors.red);
-                    },
-                  ),
+          _OrangeShape(
+            top: -96,
+            left: -92,
+            width: 300,
+            height: 300,
+            rotate: -0.78,
           ),
-          const SizedBox(height: 40),
-          Text(title,
-              style:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Text(subtitle, textAlign: TextAlign.center),
+          _OrangeShape(
+            right: -104,
+            bottom: -86,
+            width: 260,
+            height: 260,
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _ScreenBackground extends StatelessWidget {
+  const _ScreenBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFE8EAFD),
+              Color(0xFFF4F5FF),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OrangeShape extends StatelessWidget {
+  final double? top;
+  final double? left;
+  final double? right;
+  final double? bottom;
+  final double width;
+  final double height;
+  final double rotate;
+
+  const _OrangeShape({
+    this.top,
+    this.left,
+    this.right,
+    this.bottom,
+    required this.width,
+    required this.height,
+    this.rotate = 0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: top,
+      left: left,
+      right: right,
+      bottom: bottom,
+      child: Transform.rotate(
+        angle: rotate,
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: AuthTheme.primaryDark,
+            borderRadius: BorderRadius.circular(42),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingView extends StatelessWidget {
+  const _LoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return const ColoredBox(
+      color: Color(0xFFE8EAFD),
+      child: Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFF272735),
+          strokeWidth: 2.4,
+        ),
       ),
     );
   }
