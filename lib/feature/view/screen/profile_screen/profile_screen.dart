@@ -1,110 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
+import 'package:flutter_projects_getx/feature/controller/profile/edit_profile_controller.dart';
+import 'package:flutter_projects_getx/feature/view/screen/profile_screen/widgets/PrivacySecurityScreen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/profile_screen/widgets/edit_profile_screen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/profile_screen/widgets/help_supported_screen.dart';
+import 'package:flutter_projects_getx/feature/view/screen/profile_screen/widgets/notification_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ProfileController controller =
+        Get.put(ProfileController(), permanent: true);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: const Text("Profile",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView(
+      body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        children: [
-          // Profile Header Section
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: theme.primaryColor, width: 3),
-                  ),
-                  child: const CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text("Jacob Josef",
-                    style: theme.textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold)),
-                Text("jacob@gmail.com",
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: theme.hintColor)),
-              ],
+        child: Column(
+          children: [
+            Obx(() => Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: colorScheme.primary.withOpacity(0.2),
+                              blurRadius: 20,
+                              offset: const Offset(0, 10))
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundColor: colorScheme.primary,
+                        backgroundImage: controller.selectedImage.value != null
+                            ? FileImage(controller.selectedImage.value!)
+                            : null,
+                        child: controller.selectedImage.value == null
+                            ? Icon(Icons.person,
+                                size: 60, color: colorScheme.onPrimary)
+                            : null,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(controller.name.value,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    Text(controller.email.value,
+                        style: TextStyle(
+                            color: colorScheme.outline, fontSize: 14)),
+                  ],
+                )),
+            const SizedBox(height: 40),
+            Container(
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(
+                    color: colorScheme.outlineVariant.withOpacity(0.3)),
+              ),
+              child: Column(
+                children: [
+                  _buildMenuItem(Icons.person_outline, "Edit Profile",
+                      () => Get.to(() => const EditProfileScreen())),
+                  // No divider here as requested
+                  const Divider(indent: 60, height: 1),
+                  _buildMenuItem(Icons.notifications_none, "Notifications",
+                      () => Get.to(() => const NotificationsScreen())),
+                  const Divider(indent: 60, height: 1),
+                  _buildMenuItem(Icons.lock_outline, "Privacy & Security",
+                      () => Get.to(() => const PrivacySecurityScreen())),
+                  const Divider(indent: 60, height: 1),
+                  _buildMenuItem(Icons.help_outline, "Help & Support",
+                      () => Get.to(() => const HelpSupportScreen())),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 30),
-          // Menu Items
-          _buildProfileItem(
-              context, Icons.person_outline, "Edit Profile", () {}),
-          _buildProfileItem(
-              context, Icons.notifications_none, "Notifications", () {}),
-          _buildProfileItem(
-              context, Icons.lock_outline, "Privacy & Security", () {}),
-          _buildProfileItem(
-              context, Icons.help_outline, "Help & Support", () {}),
-          const Divider(),
-          // Inside your ProfileScreen build method's list:
-          _buildProfileItem(
-            context,
-            Icons.logout,
-            "Log Out",
-            () {
-              // 1. Perform your logout logic here (e.g., clear token, clear storage)
-              // await authController.logout();
-              // 2. Navigate to the Login screen and clear the navigation stack
-              Get.offAllNamed('/splash');
-            },
-            isLogout: true,
-          ),
-        ],
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  controller.resetProfileData();
+                  Get.offAllNamed('/splash');
+                },
+                icon: Icon(Icons.logout, color: colorScheme.error),
+                label: Text("Log Out",
+                    style: TextStyle(
+                        color: colorScheme.error, fontWeight: FontWeight.bold)),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  side: BorderSide(color: colorScheme.error.withOpacity(0.5)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildProfileItem(
-      BuildContext context, IconData icon, String title, VoidCallback onTap,
-      {bool isLogout = false}) {
-    final theme = Theme.of(context);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(
-        color: theme.cardColor, // Automatically adapts to Light/Dark mode
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: theme.shadowColor.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          )
-        ],
+  Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: Get.theme.colorScheme.primaryContainer,
+            shape: BoxShape.circle),
+        child: Icon(icon,
+            size: 20, color: Get.theme.colorScheme.onPrimaryContainer),
       ),
-      child: ListTile(
-        onTap: onTap,
-        leading:
-            Icon(icon, color: isLogout ? Colors.redAccent : theme.primaryColor),
-        title: Text(title,
-            style: TextStyle(
-                color: isLogout
-                    ? Colors.redAccent
-                    : theme.textTheme.bodyLarge?.color,
-                fontWeight: FontWeight.w500)),
-        trailing: Icon(Icons.arrow_forward_ios,
-            size: 16, color: theme.iconTheme.color),
-      ),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+      trailing: Icon(Icons.chevron_right, color: Get.theme.colorScheme.outline),
     );
   }
 }

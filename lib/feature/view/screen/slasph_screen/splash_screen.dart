@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  static const _navigationDelay = Duration(milliseconds: 2800);
+  static  const _navigationDelay = Duration(milliseconds: 2800);
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,9 @@ class SplashScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(gradient: AuthTheme.headerGradient),
+        decoration:  BoxDecoration(gradient: AuthTheme.headerGradient),
         child: Stack(
-          children: const [
+          children:  [
             _BackgroundCircles(),
             _SplashContent(),
           ],
@@ -30,7 +30,7 @@ class _BackgroundCircles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return  Stack(
       children: [
         Positioned(
           top: -80,
@@ -73,14 +73,14 @@ class _Circle extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: opacity),
+        color: AuthTheme.primaryDark,
       ),
     );
   }
 }
 
 class _SplashContent extends StatelessWidget {
-  const _SplashContent();
+   const _SplashContent();
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +100,10 @@ class _SplashContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _SplashLogo(scale: 0.6 + (visibleProgress * 0.4)),
-                const SizedBox(height: 28),
+                 SizedBox(height: 28),
                 _SplashText(offsetY: 30 * (1 - textProgress)),
-                const SizedBox(height: 80),
-                const _LoadingIndicator(),
+                 SizedBox(height: 80),
+                 _LoadingIndicator(),
               ],
             ),
           );
@@ -139,7 +139,7 @@ class _SplashLogo extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        child: const Icon(
+        child:  Icon(
           Icons.watch_rounded,
           color: Colors.white,
           size: 52,
@@ -160,7 +160,7 @@ class _SplashText extends StatelessWidget {
       offset: Offset(0, offsetY),
       child: Column(
         children: [
-          const Text(
+           Text(
             'Argumind',
             style: TextStyle(
               color: Colors.white,
@@ -169,7 +169,7 @@ class _SplashText extends StatelessWidget {
               letterSpacing: 1.0,
             ),
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8),
           Text(
             'Your premium watch companion',
             style: TextStyle(
@@ -190,11 +190,11 @@ class _LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return  SizedBox(
       width: 22,
       height: 22,
       child: CircularProgressIndicator(
-        color: Colors.white,
+        color: Colors.blueAccent,
         strokeWidth: 2.4,
       ),
     );

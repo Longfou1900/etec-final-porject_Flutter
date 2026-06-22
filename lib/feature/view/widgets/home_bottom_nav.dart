@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 
 class HomeBottomNav extends StatelessWidget {
   const HomeBottomNav({super.key});

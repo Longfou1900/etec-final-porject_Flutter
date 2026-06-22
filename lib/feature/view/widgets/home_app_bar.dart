@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/feature/controller/home_slide_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_slide_controller.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/home_app_bar_action.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/home_app_bar_leading.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/home_app_bar_title.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/promo_slide.dart';
 import 'package:get/get.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});

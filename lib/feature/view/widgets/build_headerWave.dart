@@ -13,15 +13,15 @@ Widget buildHeaderWave(BuildContext context, String title, {String? imageUrl}) {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(60)),
+      borderRadius:  BorderRadius.only(bottomLeft: Radius.circular(60)),
     ),
-    padding: const EdgeInsets.only(left: 30, top: 40, right: 20),
+    padding:  EdgeInsets.only(left: 30, top: 40, right: 20),
     child: Row(
       children: [
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.bold),
+            style:  TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.bold),
           ),
         ),
         if (imageUrl != null)

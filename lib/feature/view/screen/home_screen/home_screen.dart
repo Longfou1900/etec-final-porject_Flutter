@@ -4,7 +4,7 @@ import 'package:flutter_projects_getx/feature/view/screen/profile_screen/profile
 import 'package:flutter_projects_getx/feature/view/widgets/explore_tab.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/home_bottom_nav.dart';
 import 'package:get/get.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();

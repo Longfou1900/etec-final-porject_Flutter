@@ -1,5 +1,5 @@
 import 'package:flutter_projects_getx/feature/controller/cart_controller.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 import 'package:get/instance_manager.dart';
 
 class HomeBinding extends Bindings {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/view/presentation/item_detail_widgets/widgets/product_feature_list.dart';
 import 'package:flutter_projects_getx/feature/view/presentation/item_detail_widgets/widgets/product_hero_image.dart';
 import 'package:flutter_projects_getx/feature/controller/cart_controller.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 
 class ItemDetail extends StatelessWidget {
   final int id;

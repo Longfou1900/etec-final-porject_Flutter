@@ -6,11 +6,11 @@ class ExploreTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      physics:  BouncingScrollPhysics(),
+      padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       children: [
         // REMOVE any NestedScrollView.sliverOverlapAbsorberHandleFor or SliverOverlapInjector lines here
-        const Text(
+         Text(
           'Explore Products',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),

@@ -43,6 +43,10 @@ class MyApp extends StatelessWidget {
       theme: LightMode.theme,
       darkTheme: DarkMode.theme,
       themeMode: ThemeMode.system,
+
+      // transition smothly
+      defaultTransition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 350),
     );
   }
 }

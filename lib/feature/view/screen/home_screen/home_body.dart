@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects_getx/feature/controller/home_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/home/home_controller.dart';
 import 'package:flutter_projects_getx/feature/view/screen/profile_screen/profile_screen.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/explore_tab.dart';
 import 'package:flutter_projects_getx/feature/view/widgets/home_app_bar.dart';
