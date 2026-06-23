@@ -40,6 +40,16 @@ class OnboardingController extends GetxController {
         description: 'Plan your day with ease.',
       ),
       OnboardingItem(
+        title: 'Stay Organized',
+        imagePath: 'assets/images/onboarding2.png',
+        description: 'Plan your day with ease.',
+      ),
+      OnboardingItem(
+        title: 'Stay Organized',
+        imagePath: 'assets/images/onboarding2.png',
+        description: 'Plan your day with ease.',
+      ),
+      OnboardingItem(
         title: 'Get Started',
         imagePath: 'assets/images/onboarding3.png',
         description: "You're all set, let's begin!",

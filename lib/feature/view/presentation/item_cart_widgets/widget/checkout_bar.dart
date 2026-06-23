@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_projects_getx/feature/controller/cart_controller.dart';
+import 'package:flutter_projects_getx/feature/controller/checkout_controller.dart';
+import 'package:flutter_projects_getx/feature/view/screen/checkout_screen/checkout_view.dart';
 
 class CheckoutBar extends StatelessWidget {
   final CartController cart;
@@ -53,10 +55,18 @@ class CheckoutBar extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: cart.items.isEmpty ? null : () {},
+                onPressed: cart.items.isEmpty
+                    ? null
+                    : () {
+                        if (!Get.isRegistered<CheckoutController>()) {
+                          Get.put(CheckoutController());
+                        }
+                        Get.to(() => const CheckoutView());
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: scheme.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
                   ),

@@ -160,7 +160,8 @@ class _OrangeShape extends StatelessWidget {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: AuthTheme.primaryDark,
+            // ignore: deprecated_member_use
+            color: AuthTheme.primaryDark.withOpacity(0.2),
             borderRadius: BorderRadius.circular(42),
           ),
         ),
