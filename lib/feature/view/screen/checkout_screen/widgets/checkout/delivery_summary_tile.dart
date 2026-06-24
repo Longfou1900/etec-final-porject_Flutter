@@ -28,7 +28,7 @@ class DeliverySummaryTile extends StatelessWidget {
           ),
           child: Icon(icon, size: 18, color: scheme.primary),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class DeliverySummaryTile extends StatelessWidget {
                   color: scheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 3),
+              SizedBox(height: 3),
               Text(
                 subtitle,
                 style: TextStyle(
@@ -57,4 +57,3 @@ class DeliverySummaryTile extends StatelessWidget {
     );
   }
 }
-

@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter_projects_getx/feature/controller/cart_controller.dart';
 import 'package:get/get.dart';
 
-import '../view/screen/tracking_screen/tracking_view.dart';
-
 enum PaymentMethod { card, paypal, cod }
 
 enum OrderStatus { pending, processing, shipped, outForDelivery, delivered }
@@ -45,16 +43,17 @@ class CheckoutController extends GetxController {
 
     // Create a fake tracking id
     final rand = Random();
-    final id =
-        '$_trackingIdPrefix${DateTime.now().millisecondsSinceEpoch}${rand.nextInt(999)}';
+    // Create a fake tracking id (not used when skipping delivery screen)
+    rand.nextInt(999);
 
+    // clear cart and route to Home (do not open delivery/tracking screen)
     // clear cart and route to tracking
+    isPlacingOrder.value = false;
     cart.clear();
     isPlacingOrder.value = false;
 
-    // Use Get.to to navigate. We pass trackingId and initial status.
-    Get.to(() => TrackingView(trackingId: id),
-        transition: Transition.rightToLeftWithFade);
+    // Navigate back to Home (no delivery/tracking page)
+    Get.offAllNamed('/home');
     Get.snackbar('Payment successful', 'Order placed successfully.');
   }
 }

@@ -18,7 +18,7 @@ class CheckoutFooter extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         color: scheme.primary.withValues(alpha: 0.10),
@@ -30,11 +30,11 @@ class CheckoutFooter extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Total',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   totalText,
                   style: TextStyle(
@@ -46,31 +46,31 @@ class CheckoutFooter extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           SizedBox(
             height: 46,
             child: ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                          final c = Get.find<CheckoutController>();
-                          await c.confirmPayment();
-                        },
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      final c = Get.find<CheckoutController>();
+                      await c.confirmPayment();
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: scheme.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 18),
+                padding: EdgeInsets.symmetric(horizontal: 18),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
               child: isLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 22,
                       height: 22,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white),
                     )
-                  : const Text(
+                  : Text(
                       'Pay & Checkout',
                       style: TextStyle(
                           fontWeight: FontWeight.w900, color: Colors.white),
