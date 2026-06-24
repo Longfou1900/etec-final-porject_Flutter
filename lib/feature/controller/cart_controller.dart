@@ -2,14 +2,14 @@ import 'package:flutter_projects_getx/feature/model/cart_item.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
-  /// Cart items stored in memory (stateless UI requirement is satisfied).
   final RxList<CartItem> items = <CartItem>[].obs;
 
   bool get isEmpty => items.isEmpty;
 
-  String _makeProductKey({required String productId}) => productId;
+  /// Helper to store removed item info for Undo functionality
+  CartItem? _lastRemovedItem;
+  int? _lastRemovedIndex;
 
-  /// Adds product; if product exists, increments qty.
   void addToCart({
     required String productId,
     required String name,
@@ -17,14 +17,12 @@ class CartController extends GetxController {
     required String priceText,
     int qty = 1,
   }) {
-    final key = _makeProductKey(productId: productId);
-
-    final index = items.indexWhere((e) => e.productId == key);
+    final index = items.indexWhere((e) => e.productId == productId);
     if (index == -1) {
       items.add(
         CartItem(
-          id: '${key}_${DateTime.now().microsecondsSinceEpoch}',
-          productId: key,
+          id: '${productId}_${DateTime.now().microsecondsSinceEpoch}',
+          productId: productId,
           name: name,
           image: image,
           priceText: priceText,
@@ -39,29 +37,42 @@ class CartController extends GetxController {
   }
 
   void increment(String productId) {
-    final key = _makeProductKey(productId: productId);
-    final index = items.indexWhere((e) => e.productId == key);
-    if (index == -1) return;
-    final current = items[index];
-    items[index] = current.copyWith(qty: current.qty + 1);
-  }
-
-  void decrement(String productId) {
-    final key = _makeProductKey(productId: productId);
-    final index = items.indexWhere((e) => e.productId == key);
-    if (index == -1) return;
-    final current = items[index];
-    final newQty = current.qty - 1;
-    if (newQty <= 0) {
-      items.removeAt(index);
-    } else {
-      items[index] = current.copyWith(qty: newQty);
+    final index = items.indexWhere((e) => e.productId == productId);
+    if (index != -1) {
+      final current = items[index];
+      items[index] = current.copyWith(qty: current.qty + 1);
     }
   }
 
+  void decrement(String productId) {
+    final index = items.indexWhere((e) => e.productId == productId);
+    if (index != -1) {
+      final current = items[index];
+      if (current.qty > 1) {
+        items[index] = current.copyWith(qty: current.qty - 1);
+      } else {
+        remove(productId);
+      }
+    }
+  }
+
+  /// Removes item and saves it for Undo
   void remove(String productId) {
-    final key = _makeProductKey(productId: productId);
-    items.removeWhere((e) => e.productId == key);
+    final index = items.indexWhere((e) => e.productId == productId);
+    if (index != -1) {
+      _lastRemovedItem = items[index];
+      _lastRemovedIndex = index;
+      items.removeAt(index);
+    }
+  }
+
+  /// Restores the last removed item to its original position
+  void undoRemove() {
+    if (_lastRemovedItem != null && _lastRemovedIndex != null) {
+      items.insert(_lastRemovedIndex!, _lastRemovedItem!);
+      _lastRemovedItem = null;
+      _lastRemovedIndex = null;
+    }
   }
 
   void clear() {
@@ -69,20 +80,14 @@ class CartController extends GetxController {
   }
 
   double _parsePrice(String priceText) {
-    // Examples: "$199", "$0", "199"
     final cleaned = priceText.replaceAll(RegExp(r'[^0-9.]'), '');
-    if (cleaned.isEmpty) return 0;
     return double.tryParse(cleaned) ?? 0;
   }
 
   double get totalPrice {
-    double sum = 0;
-    for (final e in items) {
-      sum += _parsePrice(e.priceText) * e.qty;
-    }
-    return sum;
+    return items.fold(
+        0, (sum, item) => sum + (_parsePrice(item.priceText) * item.qty));
   }
 
   String get totalPriceText => '\$${totalPrice.toStringAsFixed(2)}';
 }
-

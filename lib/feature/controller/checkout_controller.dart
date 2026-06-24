@@ -14,7 +14,6 @@ class CheckoutController extends GetxController {
   final isPlacingOrder = false.obs;
 
   // In a real app these would come from user profile / address book.
-  final String _trackingIdPrefix = 'TRK';
 
   // Simulated estimated delivery.
   String get estimatedDeliveryText {

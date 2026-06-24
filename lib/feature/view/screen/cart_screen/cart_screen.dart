@@ -31,11 +31,14 @@ class CartScreen extends StatelessWidget {
                   separatorBuilder: (_, __) => const SizedBox(height: 14),
                   itemBuilder: (context, index) {
                     final item = cart.items[index];
+                    // Inside CartScreen's ListView itemBuilder:
                     return CartRow(
                       item: item,
                       onInc: () => cart.increment(item.productId),
                       onDec: () => cart.decrement(item.productId),
                       onRemove: () => cart.remove(item.productId),
+                      onUndo: (_) => cart
+                          .undoRemove(), // Now it correctly restores the index and item
                     );
                   },
                 );
