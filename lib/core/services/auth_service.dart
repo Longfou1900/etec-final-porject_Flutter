@@ -1,34 +1,86 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String _baseUrl = 'http://10.0.2.2:5000/api/auth'; // 10.0.2.2 is the Android emulator's local host
+  // MockAPI endpoint (as provided by the task)
+  final String _baseUrl =
+      'https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watchUser';
+
   final _storage = const FlutterSecureStorage();
 
-  Future<void> register(String fullName, String email, String role, String password) async {
+  // Keep token key consistent with StorageService/AuthCheckView
+  static const _tokenKey = 'auth_token';
+
+  Future<void> register({
+    required String fullName,
+    required String email,
+    required String role,
+    required String password,
+  }) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/register'),
+      Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'fullName': fullName, 'email': email, 'role': role, 'password': password}),
+      body: jsonEncode({
+        'fullName': fullName,
+        'email': email,
+        'role': role,
+        'password': password,
+      }),
     );
-    if (response.statusCode != 201) throw Exception('Failed to register');
+
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      throw Exception('Failed to register');
+    }
+
+    // MockAPI usually returns the created user object.
+    // Store something non-empty so AuthCheckView can consider user logged in.
+    final body = jsonDecode(response.body);
+    final token = body is Map && (body['token'] != null)
+        ? body['token'].toString()
+        : (body['id'] != null ? body['id'].toString() : email);
+
+    await _storage.write(key: _tokenKey, value: token);
   }
 
-  Future<void> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+  /// Login by reading all users from the mock endpoint and matching locally.
+  /// - If email exists but password mismatches -> throw "Invalid password"
+  /// - If email not found -> throw "User not found"
+  Future<void> login({
+    required String email,
+    required String password,
+  }) async {
+    final response = await http.get(Uri.parse(_baseUrl));
 
-    if (response.statusCode == 200) {
-      final token = jsonDecode(response.body)['token'];
-      await _storage.write(key: 'jwt', value: token); // Store JWT securely
-    } else {
+    if (response.statusCode != 200) {
       throw Exception('Login failed');
     }
+
+    final data = jsonDecode(response.body);
+    if (data is! List) {
+      throw Exception('Unexpected API response');
+    }
+
+    final matches = data.where((u) {
+      if (u is! Map) return false;
+      final uEmail = u['email']?.toString().toLowerCase();
+      return uEmail == email.toLowerCase();
+    }).toList();
+
+    if (matches.isEmpty) {
+      throw Exception('User not found');
+    }
+
+    final user = matches.first;
+    final uPassword = user['password']?.toString();
+
+    if (uPassword != password) {
+      throw Exception('Invalid password');
+    }
+
+    final token = user['token']?.toString() ?? user['id']?.toString() ?? email;
+    await _storage.write(key: _tokenKey, value: token);
   }
 
-  Future<String?> getToken() async => await _storage.read(key: 'jwt');
+  Future<String?> getToken() async => await _storage.read(key: _tokenKey);
 }
