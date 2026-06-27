@@ -73,6 +73,7 @@ class HelpSupportScreen extends StatelessWidget {
     
     return Card(
       elevation: 0,
+      // ignore: deprecated_member_use
       color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects_getx/core/auth/auth_theme.dart';
 import 'package:flutter_projects_getx/core/auth/widgets/auth_header.dart';
+import 'package:flutter_projects_getx/core/auth/widgets/glass_container.dart';
 import 'package:flutter_projects_getx/feature/controller/login_controller.dart';
 import 'package:get/get.dart';
 
@@ -12,18 +13,97 @@ class LoginScreen extends StatelessWidget {
     final controller = Get.put(LoginController());
 
     return Scaffold(
-      backgroundColor: AuthTheme.background,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const AuthHeader(
-              eyebrow: 'WELCOME BACK',
-              title: 'Sign in to your\naccount',
-              icon: Icons.watch_rounded,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFF5F6FF),
+                    Color(0xFFE9ECFF),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
             ),
-            _LoginForm(controller: controller),
-          ],
-        ),
+          ),
+          Positioned(
+            left: -90,
+            top: -140,
+            child: Container(
+              width: 260,
+              height: 260,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(130),
+                gradient: LinearGradient(
+                  colors: [
+                    AuthTheme.primary.withOpacity(0.25),
+                    AuthTheme.primaryDark.withOpacity(0.10),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: -110,
+            bottom: -160,
+            child: Container(
+              width: 310,
+              height: 310,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(155),
+                gradient: LinearGradient(
+                  colors: [
+                    AuthTheme.primary.withOpacity(0.18),
+                    const Color(0xFFFFFFFF).withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    // ONE container only: header + form are inside the same glass surface.
+                    child: GlassContainer(
+                      padding: const EdgeInsets.all(18),
+                      borderRadius: const BorderRadius.all(Radius.circular(26)),
+                      overlayGradient: LinearGradient(
+                        colors: [
+                          Colors.white.withOpacity(0.28),
+                          Colors.white.withOpacity(0.08),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      child: Column(
+                        children: [
+                          // Clean header (kept as-is for typography)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: AuthHeader(
+                              eyebrow: 'WELCOME BACK',
+                              title: 'Sign in to your\naccount',
+                              icon: Icons.watch_rounded,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          _LoginForm(controller: controller),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -36,38 +116,35 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AuthInputField(
-            controller: controller.emailController,
-            label: 'EMAIL ADDRESS',
-            hint: 'you@example.com',
-            icon: Icons.mail_outline_rounded,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          _PasswordField(controller: controller),
-          _ForgotPasswordButton(onTap: controller.onForgotPasswordTap),
-          const SizedBox(height: 8),
-          AuthGradientButton(
-            label: 'Log In',
-            onTap: controller.onLoginTap,
-          ),
-          const SizedBox(height: 28),
-          const AuthDivider(label: 'or continue with'),
-          const SizedBox(height: 20),
-          _SocialRow(controller: controller),
-          const SizedBox(height: 28),
-          AuthBottomText(
-            question: "Don't have an account? ",
-            actionLabel: 'Sign up',
-            onTap: controller.onSignUpTap,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AuthInputField(
+          controller: controller.emailController,
+          label: 'EMAIL ADDRESS',
+          hint: 'you@example.com',
+          icon: Icons.mail_outline_rounded,
+          keyboardType: TextInputType.emailAddress,
+        ),
+        const SizedBox(height: 16),
+        _PasswordField(controller: controller),
+        _ForgotPasswordButton(onTap: controller.onForgotPasswordTap),
+        const SizedBox(height: 8),
+        AuthGradientButton(
+          label: 'Log In',
+          onTap: controller.onLoginTap,
+        ),
+        const SizedBox(height: 28),
+        const AuthDivider(label: 'or continue with'),
+        const SizedBox(height: 20),
+        _SocialRow(controller: controller),
+        const SizedBox(height: 28),
+        AuthBottomText(
+          question: "Don't have an account? ",
+          actionLabel: 'Sign up',
+          onTap: controller.onSignUpTap,
+        ),
+      ],
     );
   }
 }
@@ -155,3 +232,4 @@ class _SocialRow extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../auth_theme.dart';
 
 class AuthHeader extends StatelessWidget {
@@ -15,39 +16,32 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(28, 64, 28, 48),
-      decoration: const BoxDecoration(
-        gradient: AuthTheme.headerGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _IconBadge(icon: icon),
-          const SizedBox(height: 20),
-          Text(
-            eyebrow,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.75),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
-            ),
+    // Header without heavy gradient so it looks good inside the single glass container.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _IconBadge(icon: icon),
+        const SizedBox(height: 14),
+        Text(
+          eyebrow,
+          style: TextStyle(
+            color: AuthTheme.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.2,
           ),
-          const SizedBox(height: 6),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              height: 1.25,
-            ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          title,
+          style: const TextStyle(
+            color: AuthTheme.textPrimary,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            height: 1.25,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -63,10 +57,11 @@ class _IconBadge extends StatelessWidget {
       width: 52,
       height: 52,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.18),
+        color: AuthTheme.primary.withOpacity(0.10),
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AuthTheme.primary.withOpacity(0.18)),
       ),
-      child: Icon(icon, color: Colors.white, size: 28),
+      child: Icon(icon, color: AuthTheme.primary, size: 28),
     );
   }
 }
@@ -221,7 +216,7 @@ class AuthSocialButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 14),
         side: const BorderSide(color: AuthTheme.divider, width: 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        backgroundColor: AuthTheme.surface,
+        backgroundColor: AuthTheme.surface.withOpacity(0.8),
       ),
     );
   }
@@ -263,3 +258,4 @@ class AuthBottomText extends StatelessWidget {
     );
   }
 }
+
