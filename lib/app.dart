@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-// Import your screens
 import 'package:flutter_projects_getx/core/auth/forgot_password_screen.dart';
 import 'package:flutter_projects_getx/core/auth/register_phone_screen.dart';
 import 'package:flutter_projects_getx/core/auth/signup_screen.dart';
@@ -28,10 +26,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/auth-check', page: () => const AuthCheckView()),
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => const SignupScreen()),
-
-        // Added the missing route to fix the navigation error
         GetPage(name: '/register', page: () => RegisterPhoneScreen()),
-
         GetPage(name: '/register-phone', page: () => RegisterPhoneScreen()),
         GetPage(name: '/forgot-password', page: () => ForgotPasswordScreen()),
         GetPage(
@@ -43,8 +38,6 @@ class MyApp extends StatelessWidget {
       theme: LightMode.theme,
       darkTheme: DarkMode.theme,
       themeMode: ThemeMode.system,
-
-      // transition smothly
       defaultTransition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 350),
     );

@@ -39,7 +39,9 @@ class SignupScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(135),
                 gradient: LinearGradient(
                   colors: [
+                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.25),
+                    // ignore: deprecated_member_use
                     AuthTheme.primaryDark.withOpacity(0.10),
                   ],
                 ),
@@ -56,7 +58,9 @@ class SignupScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(175),
                 gradient: LinearGradient(
                   colors: [
+                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.18),
+                    // ignore: deprecated_member_use
                     const Color(0xFFFFFFFF).withOpacity(0.05),
                   ],
                 ),
@@ -75,6 +79,7 @@ class SignupScreen extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(26)),
                       overlayGradient: LinearGradient(
                         colors: [
+                          // ignore: deprecated_member_use
                           Colors.white.withOpacity(0.28),
                           Colors.white.withOpacity(0.08),
                         ],
@@ -289,8 +294,8 @@ class _SocialRow extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: AuthSocialButton(
-            label: 'Apple',
-            icon: Icons.apple_rounded,
+            label: 'Phone',
+            icon: Icons.phone_android_rounded,
             iconColor: Colors.black87,
             onTap: controller.onAppleTap,
           ),
@@ -299,4 +304,3 @@ class _SocialRow extends StatelessWidget {
     );
   }
 }
-

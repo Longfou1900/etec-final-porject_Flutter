@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_projects_getx/feature/model/onboarding_item.dart';
 import 'package:flutter_projects_getx/feature/view/screen/onborading/widgets/onboarding_page_style.dart';
 
+import 'smooth_fade_in.dart';
+
 class OnboardingPage extends StatelessWidget {
   final OnboardingItem item;
   final OnboardingPageStyle style;
@@ -19,17 +21,29 @@ class OnboardingPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(54, 108, 54, 156),
         child: Column(
           children: [
-            _PageLabel(label: style.label),
+            SmoothFadeIn(
+              duration: const Duration(milliseconds: 480),
+              curve: Curves.easeOutCubic,
+              child: _PageLabel(label: style.label),
+            ),
             Expanded(
-              child: _HeroImage(
-                imagePath: item.imagePath,
-                icon: style.icon,
-                shadowColor: style.shadow,
+              child: SmoothFadeIn(
+                duration: const Duration(milliseconds: 520),
+                curve: Curves.easeOutCubic,
+                child: _HeroImage(
+                  imagePath: item.imagePath,
+                  icon: style.icon,
+                  shadowColor: style.shadow,
+                ),
               ),
             ),
-            _PageText(
-              title: item.title,
-              description: item.description,
+            SmoothFadeIn(
+              duration: const Duration(milliseconds: 480),
+              curve: Curves.easeOutCubic,
+              child: _PageText(
+                title: item.title,
+                description: item.description,
+              ),
             ),
           ],
         ),
@@ -37,6 +51,7 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 }
+
 
 class _PageLabel extends StatelessWidget {
   final String label;

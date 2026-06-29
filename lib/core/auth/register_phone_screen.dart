@@ -12,15 +12,27 @@ class RegisterPhoneScreen extends StatelessWidget {
       title: "Register phone",
       child: Column(
         children: [
-          TextField(decoration: InputDecoration(prefixText: "+62 ")),
-          Spacer(),
+          TextField(
+            keyboardType: TextInputType.phone,
+            decoration: const InputDecoration(
+              prefixText: "+62 ",
+              hintText: "8xx-xxx-xxxx",
+              labelText: 'Phone number',
+            ),
+          ),
+          const SizedBox(height: 24),
           GridView.builder(
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
             itemCount: 9,
             itemBuilder: (ctx, i) => Center(child: Text("${i + 1}")),
           ),
-          ElevatedButton(onPressed: () => Get.offAllNamed('/home'), child: Text("Continue")),
+          ElevatedButton(
+            onPressed: () => Get.offAllNamed('/home'),
+            child: const Text('Continue'),
+          ),
         ],
       ),
     );

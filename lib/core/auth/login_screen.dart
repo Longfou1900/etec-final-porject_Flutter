@@ -39,7 +39,9 @@ class LoginScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(130),
                 gradient: LinearGradient(
                   colors: [
+                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.25),
+                    // ignore: deprecated_member_use
                     AuthTheme.primaryDark.withOpacity(0.10),
                   ],
                 ),
@@ -56,7 +58,9 @@ class LoginScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(155),
                 gradient: LinearGradient(
                   colors: [
+                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.18),
+                    // ignore: deprecated_member_use
                     const Color(0xFFFFFFFF).withOpacity(0.05),
                   ],
                 ),
@@ -64,42 +68,47 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    // ONE container only: header + form are inside the same glass surface.
-                    child: GlassContainer(
-                      padding: const EdgeInsets.all(18),
-                      borderRadius: const BorderRadius.all(Radius.circular(26)),
-                      overlayGradient: LinearGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.28),
-                          Colors.white.withOpacity(0.08),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      child: Column(
-                        children: [
-                          // Clean header (kept as-is for typography)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: AuthHeader(
-                              eyebrow: 'WELCOME BACK',
-                              title: 'Sign in to your\naccount',
-                              icon: Icons.watch_rounded,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: GlassContainer(
+                        padding: const EdgeInsets.all(18),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(26)),
+                        overlayGradient: LinearGradient(
+                          colors: [
+                            // ignore: deprecated_member_use
+                            Colors.white.withOpacity(0.28),
+                            // ignore: deprecated_member_use
+                            Colors.white.withOpacity(0.08),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              child: AuthHeader(
+                                eyebrow: 'WELCOME BACK',
+                                title: 'Sign in to your\naccount',
+                                icon: Icons.watch_rounded,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 14),
-                          _LoginForm(controller: controller),
-                        ],
+                            const SizedBox(height: 14),
+                            _LoginForm(controller: controller),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                ],
+                    const SizedBox(height: 24),
+                  ],
+                ),
               ),
             ),
           ),
@@ -222,8 +231,8 @@ class _SocialRow extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: AuthSocialButton(
-            label: 'Apple',
-            icon: Icons.apple_rounded,
+            label: 'Phone',
+            icon: Icons.phone_android_rounded,
             iconColor: Colors.black87,
             onTap: controller.onAppleTap,
           ),
@@ -232,4 +241,3 @@ class _SocialRow extends StatelessWidget {
     );
   }
 }
-

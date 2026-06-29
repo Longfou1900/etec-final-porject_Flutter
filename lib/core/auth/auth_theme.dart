@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
 abstract class AuthTheme {
-  static const Color primary = Color(0xFF6C63FF);
-  static const Color primaryDark = Color(0xFF4F46E5);
-  static const Color background = Color(0xFFF5F5FF);
+  // Clean / ultra-modern palette (soft neutral + subtle accent)
+  static const Color primary = Color(0xFF2F6BFF); // calmer blue
+  static const Color primaryDark = Color(0xFF1B4EDB);
+
+  static const Color background = Color(0xFFF7F8FF);
   static const Color surface = Colors.white;
-  static const Color inputBorder = Color(0xFFE5E5F0);
+
+  static const Color inputBorder = Color(0xFFE7E9F5);
   static const Color inputFocusBorder = primary;
-  static const Color textPrimary = Color(0xFF1A1A2E);
-  static const Color textSecondary = Color(0xFFAAAAAA);
-  static const Color divider = Color(0xFFE0E0EE);
+
+  static const Color textPrimary = Color(0xFF111827); // slate-900-ish
+  static const Color textSecondary = Color(0xFF6B7280); // gray-500-ish
+  static const Color divider = Color(0xFFE5E7F0);
+
   static const Color googleRed = Color(0xFFEA4335);
 
   static const Gradient headerGradient = LinearGradient(
@@ -29,9 +34,9 @@ abstract class AuthTheme {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: primary.withOpacity(0.35),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: primary.withOpacity(0.26),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
           ),
         ],
       );
@@ -60,6 +65,7 @@ abstract class AuthTheme {
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: inputFocusBorder, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       );
 }

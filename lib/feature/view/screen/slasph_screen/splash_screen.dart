@@ -58,9 +58,9 @@ class _SplashScreenState extends State<SplashScreen>
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFEEF1FF),
-              Color(0xFFE3E7FF),
-              Color(0xFFF7F8FF),
+              Color(0xFFF6F7FF),
+              Color(0xFFEFF3FF),
+              Color(0xFFFFFFFF),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -120,7 +120,7 @@ class _Circle extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AuthTheme.primaryDark.withOpacity(opacity),
+        color: AuthTheme.primaryDark.withOpacity(opacity * 0.8),
       ),
     );
   }
@@ -181,7 +181,7 @@ class _SplashLogo extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.18),
+              color: AppColors.primary.withOpacity(0.16),
               blurRadius: 18,
               offset: const Offset(0, 10),
             ),
@@ -246,4 +246,3 @@ class _LoadingIndicator extends StatelessWidget {
     );
   }
 }
-
