@@ -18,6 +18,7 @@ class AuthService {
     required String role,
     required String password,
   }) async {
+
     final response = await http.post(
       Uri.parse(_baseUrl),
       headers: {'Content-Type': 'application/json'},
@@ -40,10 +41,15 @@ class AuthService {
         ? body['token'].toString()
         : (body['id'] != null ? body['id'].toString() : email);
 
+    // Persist profile fields so the Profile screen can show the signup inputs
+    await _storage.write(key: 'user_name', value: fullName);
+    await _storage.write(key: 'user_email', value: email);
+
     await _storage.write(key: _tokenKey, value: token);
   }
 
   /// Login by reading all users from the mock endpoint and matching locally.
+
   /// - If email exists but password mismatches -> throw "Invalid password"
   /// - If email not found -> throw "User not found"
   Future<void> login({
@@ -67,6 +73,8 @@ class AuthService {
       return uEmail == email.toLowerCase();
     }).toList();
 
+    // If the API returns the user, capture name/email for profile screen.
+
     if (matches.isEmpty) {
       throw Exception('User not found');
     }
@@ -79,6 +87,32 @@ class AuthService {
     }
 
     final token = user['token']?.toString() ?? user['id']?.toString() ?? email;
+
+    // Persist profile fields so Profile screen can show correct name/email
+    final fullName = user['fullName']?.toString() ?? user['name']?.toString();
+    final userEmail = user['email']?.toString();
+
+    // If fullName field is missing, try common keys.
+    final resolvedName = (fullName != null && fullName.isNotEmpty)
+        ? fullName
+        : (user['fullName']?.toString().isNotEmpty == true
+            ? user['fullName']?.toString()
+            : (user['name']?.toString().isNotEmpty == true
+                ? user['name']?.toString()
+                : null));
+
+    if (resolvedName != null && resolvedName.isNotEmpty) {
+      await _storage.write(key: 'user_name', value: resolvedName);
+    }
+
+    if (userEmail != null && userEmail.isNotEmpty) {
+      await _storage.write(key: 'user_email', value: userEmail);
+    } else {
+      // fallback to the email used for login
+      await _storage.write(key: 'user_email', value: email);
+    }
+
+
     await _storage.write(key: _tokenKey, value: token);
   }
 

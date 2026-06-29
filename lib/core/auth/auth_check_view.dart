@@ -9,25 +9,28 @@ class AuthCheckView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<String?>(
       future: AuthService().getToken(), // Check if token exists in storage
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
-        if (snapshot.hasData && snapshot.data != null) {
-          // Redirect to Home if logged in
-          WidgetsBinding.instance
-              .addPostFrameCallback((_) => Get.offNamed('/home'));
 
-          return const SizedBox();
-        } else {
-          // Redirect to Sign In/Sign Up screen
-          WidgetsBinding.instance
-              .addPostFrameCallback((_) => Get.off(() => LoginScreen()));
-          return const SizedBox();
-        }
+        final token = snapshot.data;
+        final isLoggedIn = token != null && token.isNotEmpty;
+
+        // Redirect only once.
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (isLoggedIn) {
+            Get.offNamed('/home');
+          } else {
+            Get.off(() => const LoginScreen());
+          }
+        });
+
+        return const SizedBox();
       },
     );
   }
