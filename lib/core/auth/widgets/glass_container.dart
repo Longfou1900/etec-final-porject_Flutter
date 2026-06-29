@@ -19,10 +19,11 @@ class GlassContainer extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.borderRadius = const BorderRadius.all(Radius.circular(24)),
     this.blurSigma = 18,
-    this.backgroundColor = const Color(0x66FFFFFF),
-    this.borderColor = const Color(0x33FFFFFF),
+    this.backgroundColor = const Color(0x66181C1F),
+    this.borderColor = const Color(0x33181C1F),
     this.overlayGradient,
   });
+
 
   @override
   Widget build(BuildContext context) {

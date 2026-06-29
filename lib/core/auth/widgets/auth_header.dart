@@ -57,8 +57,10 @@ class _IconBadge extends StatelessWidget {
       width: 52,
       height: 52,
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: AuthTheme.primary.withOpacity(0.10),
         borderRadius: BorderRadius.circular(16),
+        // ignore: deprecated_member_use
         border: Border.all(color: AuthTheme.primary.withOpacity(0.18)),
       ),
       child: Icon(icon, color: AuthTheme.primary, size: 28),

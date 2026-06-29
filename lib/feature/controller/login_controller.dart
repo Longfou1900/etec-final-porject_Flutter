@@ -60,8 +60,9 @@ class LoginController extends GetxController {
   }
 
   void onAppleTap() {
-    // TODO: Apple sign-in
+    Get.toNamed('/register-phone');
   }
+
 
   void onSignUpTap() {
     if (Get.key.currentContext != null) {

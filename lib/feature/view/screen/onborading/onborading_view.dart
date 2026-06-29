@@ -104,7 +104,9 @@ class _PageRevealAnimation extends StatelessWidget {
           duration: const Duration(milliseconds: 420),
           curve: Curves.easeOutCubic,
           transform: Matrix4.identity()
+            // ignore: deprecated_member_use
             ..translate(0.0, isActive ? 0.0 : 12.0)
+            // ignore: deprecated_member_use
             ..scale(isActive ? 1.0 : 0.985),
           child: child,
         ),
@@ -114,6 +116,7 @@ class _PageRevealAnimation extends StatelessWidget {
 }
 
 @Deprecated('Brand header removed; keep class only if needed later.')
+// ignore: unused_element
 class _BrandHeader extends StatelessWidget {
   const _BrandHeader();
 
@@ -235,6 +238,7 @@ class _SoftBlobs extends StatelessWidget {
                 width: 240,
                 height: 240,
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: AuthTheme.primaryDark.withOpacity(0.14),
                   borderRadius: BorderRadius.circular(42),
                 ),
@@ -269,6 +273,7 @@ class _CircleBlob extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
+            // ignore: deprecated_member_use
             color: AuthTheme.primaryDark.withOpacity(opacity),
           ),
         ),
