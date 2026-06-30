@@ -40,9 +40,9 @@ class LoginScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     // ignore: deprecated_member_use
-                    AuthTheme.primary.withOpacity(0.25),
+                    const Color.fromARGB(255, 0, 18, 62).withOpacity(0.25),
                     // ignore: deprecated_member_use
-                    AuthTheme.primaryDark.withOpacity(0.10),
+                    const Color.fromARGB(255, 5, 99, 134).withOpacity(0.10),
                   ],
                 ),
               ),
@@ -59,9 +59,9 @@ class LoginScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     // ignore: deprecated_member_use
-                    AuthTheme.primary.withOpacity(0.18),
+                    const Color.fromARGB(255, 3, 22, 72).withOpacity(0.20),
                     // ignore: deprecated_member_use
-                    const Color(0xFFFFFFFF).withOpacity(0.05),
+                    const Color.fromARGB(255, 0, 187, 229).withOpacity(0.05),
                   ],
                 ),
               ),

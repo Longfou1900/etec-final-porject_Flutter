@@ -3,42 +3,29 @@ import 'package:flutter/material.dart';
 import '../auth_theme.dart';
 
 class AuthHeader extends StatelessWidget {
-  final String eyebrow;
-  final String title;
-  final IconData icon;
-
-  const AuthHeader({
-    super.key,
-    required this.eyebrow,
-    required this.title,
-    required this.icon,
-  });
+  const AuthHeader({super.key, required String eyebrow, required String title, required IconData icon});
 
   @override
   Widget build(BuildContext context) {
-    // Header without heavy gradient so it looks good inside the single glass container.
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _IconBadge(icon: icon),
-        const SizedBox(height: 14),
         Text(
-          eyebrow,
+          'Welcome Back!',
           style: TextStyle(
-            color: AuthTheme.primary,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
+            color: Color(0xFF1F2937), // Dark grey for a modern, soft text look
+            fontSize: 32,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.5,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 8),
         Text(
-          title,
-          style: const TextStyle(
-            color: AuthTheme.textPrimary,
-            fontSize: 28,
-            fontWeight: FontWeight.w700,
-            height: 1.25,
+          'Sign in to your account',
+          style: TextStyle(
+            color: Color(0xFF6B7280), // Muted grey for subtext
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ],
