@@ -33,6 +33,7 @@ class AuthHeader extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _IconBadge extends StatelessWidget {
   final IconData icon;
 

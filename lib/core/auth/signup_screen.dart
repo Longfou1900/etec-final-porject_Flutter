@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_projects_getx/core/auth/auth_theme.dart';
 import 'package:flutter_projects_getx/core/auth/widgets/auth_header.dart';
 import 'package:flutter_projects_getx/core/auth/widgets/glass_container.dart';
+import 'package:flutter_projects_getx/core/auth/register_phone_screen.dart';
 import 'package:flutter_projects_getx/feature/controller/sign_up_controller.dart';
 import 'package:get/get.dart';
 
@@ -39,9 +40,7 @@ class SignupScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(135),
                 gradient: LinearGradient(
                   colors: [
-                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.25),
-                    // ignore: deprecated_member_use
                     AuthTheme.primaryDark.withOpacity(0.10),
                   ],
                 ),
@@ -58,9 +57,7 @@ class SignupScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(175),
                 gradient: LinearGradient(
                   colors: [
-                    // ignore: deprecated_member_use
                     AuthTheme.primary.withOpacity(0.18),
-                    // ignore: deprecated_member_use
                     const Color(0xFFFFFFFF).withOpacity(0.05),
                   ],
                 ),
@@ -69,34 +66,31 @@ class SignupScreen extends StatelessWidget {
           ),
           SafeArea(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    // ONE container only: header + form are inside the same glass surface.
-                    child: GlassContainer(
-                      padding: const EdgeInsets.all(18),
-                      borderRadius: const BorderRadius.all(Radius.circular(26)),
-                      overlayGradient: LinearGradient(
-                        colors: [
-                          // ignore: deprecated_member_use
-                          Colors.white.withOpacity(0.28),
-                          Colors.white.withOpacity(0.08),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      child: Column(
-                        children: [
-                          AuthHeader(
-                            eyebrow: 'GET STARTED',
-                            title: 'Create your\nnew account',
-                            icon: Icons.person_add_rounded,
-                          ),
-                          const SizedBox(height: 14),
-                          _SignupForm(controller: controller),
-                        ],
-                      ),
+                  const SizedBox(height: 0),
+                  GlassContainer(
+                    padding: const EdgeInsets.all(18),
+                    borderRadius: const BorderRadius.all(Radius.circular(26)),
+                    overlayGradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.28),
+                        Colors.white.withOpacity(0.08),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    child: Column(
+                      children: [
+                        AuthHeader(
+                          eyebrow: 'GET STARTED',
+                          title: 'Create your\nnew account',
+                          icon: Icons.person_add_rounded,
+                        ),
+                        const SizedBox(height: 14),
+                        _SignupForm(controller: controller),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -297,7 +291,7 @@ class _SocialRow extends StatelessWidget {
             label: 'Phone',
             icon: Icons.phone_android_rounded,
             iconColor: Colors.black87,
-            onTap: controller.onAppleTap,
+            onTap: () => Get.to(() => const RegisterPhoneScreen()),
           ),
         ),
       ],

@@ -152,6 +152,7 @@ class _LoginForm extends StatelessWidget {
           question: "Don't have an account? ",
           actionLabel: 'Sign up',
           onTap: controller.onSignUpTap,
+
         ),
       ],
     );

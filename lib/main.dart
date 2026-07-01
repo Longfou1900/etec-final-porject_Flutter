@@ -14,6 +14,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 2. Put the service into the GetX dependency container
   // Initialize globally
-  Get.put(AuthService()); 
+  Get.put(AuthService());  
   runApp(const MyApp());
 }

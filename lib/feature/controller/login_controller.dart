@@ -40,14 +40,29 @@ class LoginController extends GetxController {
     } on Exception catch (e) {
       final msg = e.toString();
       if (msg.contains('User not found')) {
-        Get.snackbar('Account not found',
-            'No account for this email. Please create one.',
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Account not found',
+          'No account exists for this email. Please sign up.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
         Get.offAllNamed('/signup');
         return;
       }
-      Get.snackbar('Login failed', msg.replaceFirst('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+
+      if (msg.contains('Invalid password')) {
+        Get.snackbar(
+          'Wrong password',
+          'The password you entered is incorrect. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      Get.snackbar(
+        'Login failed',
+        msg.replaceFirst('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
@@ -65,11 +80,7 @@ class LoginController extends GetxController {
 
 
   void onSignUpTap() {
-    if (Get.key.currentContext != null) {
-      Get.toNamed('/signup');
-    } else {
-      // Handle the case where Get is not initialized
-      print("Get is not initialized yet");
-    }
+    Get.toNamed('/signup');
   }
+
 }

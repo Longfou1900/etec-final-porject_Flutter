@@ -77,7 +77,11 @@ class ItemDetail extends StatelessWidget {
             bottom: MediaQuery.sizeOf(context).height * 0.56,
             child: Center(
               child: ProductHeroImage(
-                  heroTag: heroTag, imageUrl: item?.images, images: const []),
+                  heroTag: heroTag,
+                  imageUrl: item?.images,
+                  images: (item?.images is List)
+                      ? (item?.images as List).map((e) => e.toString()).toList()
+                      : const []),
             ),
           ),
         ],
