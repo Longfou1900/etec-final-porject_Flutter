@@ -84,13 +84,7 @@ class _ProductHeroImageState extends State<ProductHeroImage> {
                         );
                       },
                     ),
-                    // Left arrow (must capture taps reliably)
-                    Positioned.fill(
-                      child: IgnorePointer(
-                        ignoring: true,
-                        child: Container(),
-                      ),
-                    ),
+
                     Positioned(
                       left: 0,
                       top: 0,
