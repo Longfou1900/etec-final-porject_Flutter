@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/splash',
       getPages: [
-        GetPage(name: '/splash', page: () => const SplashScreen()),
+        GetPage(name: '/splash', page: () => SplashScreen()),
         GetPage(name: '/onboarding', page: () => OnboardingView()),
-        GetPage(name: '/auth-check', page: () => const AuthCheckView()),
+        GetPage(name: '/auth-check', page: () => AuthCheckView()),
         GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/signup', page: () => const SignupScreen()),
+        GetPage(name: '/signup', page: () => SignupScreen()),
         GetPage(name: '/register', page: () => RegisterPhoneScreen()),
         GetPage(name: '/register-phone', page: () => RegisterPhoneScreen()),
         GetPage(name: '/forgot-password', page: () => ForgotPasswordScreen()),
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       darkTheme: DarkMode.theme,
       themeMode: ThemeMode.system,
       defaultTransition: Transition.rightToLeftWithFade,
-      transitionDuration: const Duration(milliseconds: 350),
+      transitionDuration: Duration(milliseconds: 350),
     );
   }
 }
