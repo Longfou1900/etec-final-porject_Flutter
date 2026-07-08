@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   static const _watchApiUrl =
-      'https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watch';
+      'https://seangleangsim006-cmd.github.io/fake-json/';
 
   // create variable
   var _counter = 0.obs;
