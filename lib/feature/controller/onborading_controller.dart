@@ -31,27 +31,17 @@ class OnboardingController extends GetxController {
     onboardingData.assignAll(const [
       OnboardingItem(
         title: 'Welcome',
-        imagePath: 'assets/images/onboarding1.png',
+        imagePath: 'assets/images/mac1.png',
         description: 'Track everything in one place.',
       ),
       OnboardingItem(
         title: 'Stay Organized',
-        imagePath: 'assets/images/onboarding2.png',
-        description: 'Plan your day with ease.',
-      ),
-      OnboardingItem(
-        title: 'Stay Organized',
-        imagePath: 'assets/images/onboarding2.png',
-        description: 'Plan your day with ease.',
-      ),
-      OnboardingItem(
-        title: 'Stay Organized',
-        imagePath: 'assets/images/onboarding2.png',
+        imagePath: 'assets/images/mac2.png',
         description: 'Plan your day with ease.',
       ),
       OnboardingItem(
         title: 'Get Started',
-        imagePath: 'assets/images/onboarding3.png',
+        imagePath: 'assets/images/mac3.png',
         description: "You're all set, let's begin!",
       ),
     ]);
